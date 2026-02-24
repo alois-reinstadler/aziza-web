@@ -1,44 +1,65 @@
 <script lang="ts">
-	import { inView, scrollProgress } from './animations';
+	import { inView } from './animations';
 	import { collections } from '$lib/config/collections';
 	import mainImage from '$lib/assets/stock-images/AdobeStock_1710340739.webp';
 	import accentImage from '$lib/assets/stock-images/AdobeStock_1705702729.webp';
 
 	const featured = collections.slice(0, 2);
+
+	// Track scroll for floaty parallax on sticky text
+	let sectionEl: HTMLElement | undefined = $state();
+	let floatY = $state(0);
+
+	function onScroll() {
+		if (!sectionEl) return;
+		const rect = sectionEl.getBoundingClientRect();
+		const sectionH = sectionEl.offsetHeight;
+		const windowH = window.innerHeight;
+		// Progress through the section: 0 at top, 1 at bottom
+		const progress = Math.min(Math.max(-rect.top / (sectionH - windowH), 0), 1);
+		// Subtle float: text moves up to -30px as you scroll through
+		floatY = progress * -30;
+	}
 </script>
 
-<section class="light relative bg-background py-24 lg:py-0">
-	<div class="mx-auto max-w-7xl px-6 lg:px-8">
-		<div class="grid grid-cols-1 gap-12 lg:grid-cols-[2fr_1px_3fr] lg:gap-0">
-			<!-- Left column — sticky on desktop -->
-			<div class="lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:justify-center lg:pr-16">
-				<p
-					use:inView
-					class="reveal-up mb-6 text-xs font-medium tracking-[0.3em] text-muted-foreground uppercase"
-				>
-					Editorial
-				</p>
-				<h2
-					use:inView
-					class="reveal-up mb-8 font-serif text-4xl leading-[1.05] font-light text-black lg:text-6xl"
-				>
-					Where craft<br />meets quiet<br />luxury.
-				</h2>
-				<p
-					use:inView={{ threshold: 0.3 }}
-					class="reveal-up max-w-sm leading-relaxed text-muted-foreground"
-				>
-					Aziza was born from a deep belief that the home should feel like a sanctuary — a place of
-					warmth, calm, and quiet beauty.
-				</p>
-			</div>
+<svelte:window onscroll={onScroll} />
 
-			<!-- Vertical divider — draws itself on scroll -->
-			<div use:scrollProgress class="hidden lg:block">
+<section bind:this={sectionEl} class="light relative bg-background py-24 lg:py-0">
+	<div class="mx-auto max-w-7xl px-6 lg:px-8">
+		<div class="grid grid-cols-1 gap-12 lg:grid-cols-[2fr_3fr] lg:gap-0">
+			<!-- Left column — sticky on desktop with floaty parallax -->
+			<div
+				class="relative lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:justify-center lg:pr-16"
+			>
 				<div
-					class="mx-auto h-full w-px bg-border"
-					style="transform: scaleY(var(--scroll-progress, 0)); transform-origin: top"
-				></div>
+					class="transition-transform duration-300 ease-out"
+					style="transform: translateY({floatY}px)"
+				>
+					<p
+						use:inView
+						class="reveal-up mb-6 text-xs font-medium tracking-[0.3em] text-muted-foreground uppercase"
+					>
+						Editorial
+					</p>
+					<h2
+						use:inView
+						class="reveal-up mb-8 font-serif text-4xl leading-[1.05] font-light text-black lg:text-6xl"
+					>
+						Where craft<br />meets quiet<br />luxury.
+					</h2>
+					<p
+						use:inView={{ threshold: 0.3 }}
+						class="reveal-up max-w-sm leading-relaxed text-muted-foreground"
+					>
+						Aziza was born from a deep belief that the home should feel like a sanctuary — a place
+						of warmth, calm, and quiet beauty.
+					</p>
+				</div>
+
+				<!-- Vertical divider line — right edge of left column -->
+				<div class="absolute top-0 right-0 hidden h-full w-px lg:block">
+					<div class="divider-line h-full w-full bg-border/40"></div>
+				</div>
 			</div>
 
 			<!-- Right column — scrolling content -->
@@ -137,6 +158,27 @@
 </section>
 
 <style>
+	/* Divider line grows from top on scroll */
+	.divider-line {
+		transform: scaleY(0);
+		transform-origin: top;
+		animation: grow-line 1s ease-out forwards;
+		animation-play-state: paused;
+		animation-delay: 0s;
+	}
+	section:global(.light) .divider-line {
+		animation-play-state: running;
+	}
+
+	@keyframes grow-line {
+		from {
+			transform: scaleY(0);
+		}
+		to {
+			transform: scaleY(1);
+		}
+	}
+
 	.reveal-wipe {
 		clip-path: inset(0 100% 0 0);
 		transition: clip-path 800ms cubic-bezier(0.77, 0, 0.175, 1);
