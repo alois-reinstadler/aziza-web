@@ -66,12 +66,7 @@
 			</defs>
 
 			<!-- Stroke paths masked by the logo silhouette -->
-			<g
-				mask="url(#logo-mask)"
-				clip-path="url(#logo-clip)"
-				class="transition-opacity duration-500"
-				style="opacity: {fillVisible ? 0 : 1}"
-			>
+			<g mask="url(#logo-mask)" clip-path="url(#logo-clip)">
 				<!-- Left side strokes -->
 				<path d="M1 66L37 0" class="logo-stroke stroke-s1" />
 				<path d="M33 1L52 62H60.5L108 -2.5" class="logo-stroke stroke-s2" stroke-width="10" />
@@ -115,7 +110,7 @@
 			style="opacity: {taglineVisible ? 1 : 0}; transform: translateY({taglineVisible ? 0 : 15}px)"
 		>
 			<p class="font-serif text-lg font-light tracking-[0.15em] text-white/70 lg:text-xl">
-				Where Home Becomes Haven
+				Where Home Becomes Heaven
 			</p>
 		</div>
 	</div>
@@ -125,7 +120,7 @@
 	.logo-stroke {
 		fill: none;
 		stroke: white;
-		stroke-width: 2;
+		stroke-width: 10;
 		stroke-dasharray: 500;
 		stroke-dashoffset: 500;
 		stroke-linecap: round;
