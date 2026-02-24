@@ -8,12 +8,11 @@
 			(entries) => {
 				for (const entry of entries) {
 					if (entry.isIntersecting) {
-						// Add class to unpause CSS stroke-draw animations
 						node.classList.add('in-view');
-						// Stage 2: fill fades in after stroke draw completes (~1600ms)
-						const t1 = setTimeout(() => (fillVisible = true), 1800);
+						// Stage 2: fill fades in after stroke draw completes
+						const t1 = setTimeout(() => (fillVisible = true), 2200);
 						// Stage 3: tagline fades in
-						const t2 = setTimeout(() => (taglineVisible = true), 2400);
+						const t2 = setTimeout(() => (taglineVisible = true), 2800);
 						observer.unobserve(node);
 
 						return () => {
@@ -33,11 +32,11 @@
 		};
 	}
 
-	// Logo path data from logo_regular.svg
-	const centerBar = 'M119 0V66H125V0H119Z';
-	const rightSide =
+	// Original fill paths from logo_regular.svg — used as mask
+	const maskCenter = 'M119 0V66H125V0H119Z';
+	const maskRight =
 		'M208 0L244 66H242L212 11L195 66H133V64H180L133 0H187V2H145L187 59H189L206 0H208Z';
-	const leftSide = 'M36 0L0 66H2L32 11L49 66H111V64H64L111 0H57V2H99L57 59H55L38 0H36Z';
+	const maskLeft = 'M36 0L0 66H2L32 11L49 66H111V64H64L111 0H57V2H99L57 59H55L38 0H36Z';
 </script>
 
 <section
@@ -46,46 +45,64 @@
 	class="flex min-h-screen flex-col items-center justify-center bg-black"
 >
 	<div class="relative w-full max-w-lg px-8 lg:max-w-xl">
-		<!-- SVG with stroke-draw animation -->
 		<svg
 			viewBox="0 0 244 66"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
-			class="w-full"
+			class="w-full overflow-visible"
 			aria-label="Aziza logo"
 		>
-			<!-- Stroke-draw paths (visible during draw phase, fade out when fill appears) -->
-			<path
-				d={centerBar}
-				class="logo-stroke stroke-center transition-opacity duration-500"
-				style="opacity: {fillVisible ? 0 : 1}"
-			/>
-			<path
-				d={rightSide}
-				class="logo-stroke stroke-right transition-opacity duration-500"
-				style="opacity: {fillVisible ? 0 : 1}"
-			/>
-			<path
-				d={leftSide}
-				class="logo-stroke stroke-left transition-opacity duration-500"
-				style="opacity: {fillVisible ? 0 : 1}"
-			/>
+			<defs>
+				<!-- Mask: original fill shapes define visible area -->
+				<mask id="logo-mask">
+					<rect width="244" height="66" fill="black" />
+					<path d={maskCenter} fill="white" />
+					<path d={maskRight} fill="white" />
+					<path d={maskLeft} fill="white" />
+				</mask>
+				<clipPath id="logo-clip">
+					<rect width="244" height="66" />
+				</clipPath>
+			</defs>
 
-			<!-- Fill paths (fade in after stroke completes) -->
+			<!-- Stroke paths masked by the logo silhouette -->
+			<g
+				mask="url(#logo-mask)"
+				clip-path="url(#logo-clip)"
+				class="transition-opacity duration-500"
+				style="opacity: {fillVisible ? 0 : 1}"
+			>
+				<!-- Left side strokes -->
+				<path d="M1 66L37 0" class="logo-stroke stroke-s1" />
+				<path d="M33 1L52 62H60.5L108 -2.5" class="logo-stroke stroke-s2" stroke-width="10" />
+				<path d="M50 65H111" class="logo-stroke stroke-s3" />
+				<path d="M110 1H57" class="logo-stroke stroke-s4" />
+
+				<!-- Center bar -->
+				<path d="M122 66V0" class="logo-stroke stroke-s5" stroke-width="6" />
+
+				<!-- Right side strokes -->
+				<path d="M243 66L207 0" class="logo-stroke stroke-s6" />
+				<path d="M211 1L192 62H183.5L136 -2.5" class="logo-stroke stroke-s7" stroke-width="10" />
+				<path d="M194 65H133" class="logo-stroke stroke-s8" />
+				<path d="M134 1H187" class="logo-stroke stroke-s9" />
+			</g>
+
+			<!-- Solid fill paths (fade in after stroke draw completes) -->
 			<path
-				d={centerBar}
+				d={maskCenter}
 				fill="white"
 				class="transition-opacity duration-700"
 				style="opacity: {fillVisible ? 1 : 0}"
 			/>
 			<path
-				d={rightSide}
+				d={maskRight}
 				fill="white"
 				class="transition-opacity duration-700"
 				style="opacity: {fillVisible ? 1 : 0}; transition-delay: 100ms"
 			/>
 			<path
-				d={leftSide}
+				d={maskLeft}
 				fill="white"
 				class="transition-opacity duration-700"
 				style="opacity: {fillVisible ? 1 : 0}; transition-delay: 200ms"
@@ -108,21 +125,41 @@
 	.logo-stroke {
 		fill: none;
 		stroke: white;
-		stroke-width: 0.8;
-		stroke-dasharray: 1000;
-		stroke-dashoffset: 1000;
-		stroke-linejoin: miter;
+		stroke-width: 2;
+		stroke-dasharray: 500;
+		stroke-dashoffset: 500;
+		stroke-linecap: round;
 	}
 
-	/* Staggered draw: center first, then sides */
-	.stroke-center {
-		animation: draw 1200ms cubic-bezier(0.4, 0, 0.2, 1) 200ms forwards;
+	/* Staggered draw timing — center first, then outward */
+	.stroke-s5 {
+		animation: draw 1000ms cubic-bezier(0.4, 0, 0.2, 1) 100ms forwards;
 	}
-	.stroke-left {
-		animation: draw 1400ms cubic-bezier(0.4, 0, 0.2, 1) 400ms forwards;
+	/* Left side */
+	.stroke-s1 {
+		animation: draw 800ms cubic-bezier(0.4, 0, 0.2, 1) 400ms forwards;
 	}
-	.stroke-right {
-		animation: draw 1400ms cubic-bezier(0.4, 0, 0.2, 1) 600ms forwards;
+	.stroke-s2 {
+		animation: draw 1200ms cubic-bezier(0.4, 0, 0.2, 1) 500ms forwards;
+	}
+	.stroke-s3 {
+		animation: draw 600ms cubic-bezier(0.4, 0, 0.2, 1) 900ms forwards;
+	}
+	.stroke-s4 {
+		animation: draw 600ms cubic-bezier(0.4, 0, 0.2, 1) 800ms forwards;
+	}
+	/* Right side */
+	.stroke-s6 {
+		animation: draw 800ms cubic-bezier(0.4, 0, 0.2, 1) 400ms forwards;
+	}
+	.stroke-s7 {
+		animation: draw 1200ms cubic-bezier(0.4, 0, 0.2, 1) 500ms forwards;
+	}
+	.stroke-s8 {
+		animation: draw 600ms cubic-bezier(0.4, 0, 0.2, 1) 900ms forwards;
+	}
+	.stroke-s9 {
+		animation: draw 600ms cubic-bezier(0.4, 0, 0.2, 1) 800ms forwards;
 	}
 
 	@keyframes draw {
@@ -131,7 +168,7 @@
 		}
 	}
 
-	/* Pause animations until section scrolls into view */
+	/* Pause all animations until section scrolls into view */
 	section:not(:global(.in-view)) .logo-stroke {
 		animation-play-state: paused;
 	}
