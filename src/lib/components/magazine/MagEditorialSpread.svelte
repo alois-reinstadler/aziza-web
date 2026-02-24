@@ -7,7 +7,7 @@
 	const featured = collections.slice(0, 2);
 </script>
 
-<section class="light relative overflow-hidden bg-background py-24 lg:py-0">
+<section class="light relative bg-background py-24 lg:py-0">
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="grid grid-cols-1 gap-12 lg:grid-cols-[2fr_1px_3fr] lg:gap-0">
 			<!-- Left column — sticky on desktop -->
