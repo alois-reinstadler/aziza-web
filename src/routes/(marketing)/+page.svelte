@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { SsgoiTransition } from '@ssgoi/svelte';
-	import HeroSection from '$lib/components/marketing/HeroSection.svelte';
-	import CollectionsSection from '$lib/components/marketing/CollectionsSection.svelte';
-	import BrandStory from '$lib/components/marketing/BrandStory.svelte';
-	import ValuesSection from '$lib/components/marketing/ValuesSection.svelte';
-	import NewsletterSection from '$lib/components/marketing/NewsletterSection.svelte';
+	import MagHero from '$lib/components/magazine/MagHero.svelte';
+	import MagEditorialSpread from '$lib/components/magazine/MagEditorialSpread.svelte';
+	import MagBentoGrid from '$lib/components/magazine/MagBentoGrid.svelte';
+	import MagCraftStrip from '$lib/components/magazine/MagCraftStrip.svelte';
+	import MagNewsletter from '$lib/components/magazine/MagNewsletter.svelte';
 </script>
 
 <svelte:head>
@@ -13,9 +13,9 @@
 </svelte:head>
 
 <SsgoiTransition id="/">
-	<HeroSection />
-	<CollectionsSection />
-	<BrandStory />
-	<ValuesSection />
-	<NewsletterSection />
+	<MagHero />
+	<MagEditorialSpread />
+	<MagBentoGrid />
+	<MagCraftStrip />
+	<MagNewsletter />
 </SsgoiTransition>
