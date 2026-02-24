@@ -28,10 +28,7 @@
 <section data-navbar-dark class="relative overflow-hidden py-24 lg:py-0">
 	<!-- Desktop: scroll-driven horizontal strip -->
 	<div class="hidden lg:block">
-		<div
-			use:scrollProgress
-			class="relative h-[300vh]"
-		>
+		<div use:scrollProgress class="relative h-[300vh]">
 			<div class="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
 				<div class="mb-12 px-16">
 					<p class="mb-3 text-xs font-medium tracking-[0.3em] text-muted-foreground uppercase">

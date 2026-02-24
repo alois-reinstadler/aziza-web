@@ -34,10 +34,7 @@
 			</div>
 
 			<!-- Vertical divider — draws itself on scroll -->
-			<div
-				use:scrollProgress
-				class="hidden lg:block"
-			>
+			<div use:scrollProgress class="hidden lg:block">
 				<div
 					class="mx-auto h-full w-px bg-border"
 					style="transform: scaleY(var(--scroll-progress, 0)); transform-origin: top"
@@ -48,11 +45,7 @@
 			<div class="space-y-20 lg:py-32 lg:pl-16">
 				<!-- Main brand image -->
 				<div use:inView class="reveal-up overflow-hidden">
-					<img
-						src={mainImage}
-						alt="Aziza craftsmanship"
-						class="aspect-4/5 w-full object-cover"
-					/>
+					<img src={mainImage} alt="Aziza craftsmanship" class="aspect-4/5 w-full object-cover" />
 				</div>
 
 				<!-- Brand text block -->
@@ -77,7 +70,7 @@
 
 				<!-- Featured collections preview -->
 				{#each featured as col, i (col.id)}
-					<div use:inView class="{i % 2 === 0 ? 'reveal-slide-left' : 'reveal-slide-right'}">
+					<div use:inView class={i % 2 === 0 ? 'reveal-slide-left' : 'reveal-slide-right'}>
 						<a href={col.href} class="group block">
 							<div class="overflow-hidden">
 								<img
@@ -87,7 +80,9 @@
 								/>
 							</div>
 							<div class="mt-4">
-								<span class="text-xs tracking-[0.2em] text-muted-foreground uppercase">{col.tag}</span>
+								<span class="text-xs tracking-[0.2em] text-muted-foreground uppercase"
+									>{col.tag}</span
+								>
 								<h3 class="mt-1 font-serif text-2xl font-light">{col.label}</h3>
 							</div>
 						</a>
@@ -110,7 +105,9 @@
 	.reveal-up {
 		opacity: 0;
 		transform: translateY(40px);
-		transition: opacity 700ms ease-out, transform 700ms ease-out;
+		transition:
+			opacity 700ms ease-out,
+			transform 700ms ease-out;
 	}
 	.reveal-up:global(.in-view) {
 		opacity: 1;
@@ -120,7 +117,9 @@
 	.reveal-slide-left {
 		opacity: 0;
 		transform: translateX(-40px);
-		transition: opacity 700ms ease-out, transform 700ms ease-out;
+		transition:
+			opacity 700ms ease-out,
+			transform 700ms ease-out;
 	}
 	.reveal-slide-left:global(.in-view) {
 		opacity: 1;
@@ -130,7 +129,9 @@
 	.reveal-slide-right {
 		opacity: 0;
 		transform: translateX(40px);
-		transition: opacity 700ms ease-out, transform 700ms ease-out;
+		transition:
+			opacity 700ms ease-out,
+			transform 700ms ease-out;
 	}
 	.reveal-slide-right:global(.in-view) {
 		opacity: 1;

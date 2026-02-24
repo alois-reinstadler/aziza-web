@@ -23,10 +23,9 @@
 			class="headline-container mb-6 font-serif text-[8vw] leading-[0.9] font-light text-foreground lg:text-[5vw]"
 		>
 			{#each headline as { char, index }}
-				<span
-					class="headline-char inline-block"
-					style="transition-delay: {index * 40}ms"
-				>{char === ' ' ? '\u00A0' : char}</span>
+				<span class="headline-char inline-block" style="transition-delay: {index * 40}ms"
+					>{char === ' ' ? '\u00A0' : char}</span
+				>
 			{/each}
 		</h2>
 
@@ -39,7 +38,7 @@
 		</p>
 
 		{#if submitted}
-			<p class="font-serif text-2xl font-light italic text-foreground">Thank you for joining.</p>
+			<p class="font-serif text-2xl font-light text-foreground italic">Thank you for joining.</p>
 		{:else}
 			<form
 				onsubmit={handleSubmit}
@@ -53,10 +52,7 @@
 					required
 					class="flex-1 rounded-none border-foreground/20 focus-visible:border-foreground/60"
 				/>
-				<Button
-					type="submit"
-					class="shrink-0 rounded-none px-8 text-sm tracking-wide"
-				>
+				<Button type="submit" class="shrink-0 rounded-none px-8 text-sm tracking-wide">
 					Subscribe
 				</Button>
 			</form>
@@ -69,7 +65,9 @@
 	.headline-char {
 		opacity: 0;
 		transform: translateY(20px);
-		transition: opacity 500ms ease-out, transform 500ms ease-out;
+		transition:
+			opacity 500ms ease-out,
+			transform 500ms ease-out;
 	}
 	.headline-container:global(.in-view) .headline-char {
 		opacity: 1;
@@ -79,7 +77,9 @@
 	.reveal-up {
 		opacity: 0;
 		transform: translateY(30px);
-		transition: opacity 600ms ease-out, transform 600ms ease-out;
+		transition:
+			opacity 600ms ease-out,
+			transform 600ms ease-out;
 	}
 	.reveal-up:global(.in-view) {
 		opacity: 1;

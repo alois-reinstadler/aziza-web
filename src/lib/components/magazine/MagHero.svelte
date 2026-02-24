@@ -66,8 +66,8 @@
 							opacity: {showText ? 1 : 0};
 							transform: translateY({showText ? 0 : 40}px);
 							transition-delay: {index * 60}ms;
-						"
-					>{char}</span>
+						">{char}</span
+					>
 				{/each}
 			</h1>
 		</div>
@@ -77,7 +77,9 @@
 			<!-- Subtext + CTA -->
 			<div
 				class="order-2 max-w-sm lg:order-1"
-				style="opacity: {showCta ? 1 : 0}; transform: translateY({showCta ? 0 : 20}px); transition: all 700ms ease-out"
+				style="opacity: {showCta ? 1 : 0}; transform: translateY({showCta
+					? 0
+					: 20}px); transition: all 700ms ease-out"
 			>
 				<p class="mb-6 text-sm leading-relaxed text-white/60 lg:text-base">
 					Thoughtfully crafted textiles that transform everyday living into something extraordinary.
@@ -111,8 +113,8 @@
 								opacity: {showText ? 1 : 0};
 								transform: translateY({showText ? 0 : 40}px);
 								transition-delay: {(index + titleTop.length) * 50}ms;
-							"
-						>{char}</span>
+							">{char}</span
+						>
 					{/each}
 				</h1>
 			</div>
