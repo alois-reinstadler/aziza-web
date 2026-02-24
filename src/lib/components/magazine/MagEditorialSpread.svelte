@@ -20,7 +20,7 @@
 				</p>
 				<h2
 					use:inView
-					class="reveal-wipe mb-8 font-serif text-4xl leading-[1.05] font-light text-foreground lg:text-6xl"
+					class="reveal-wipe mb-8 font-serif text-4xl leading-[1.05] font-light text-black lg:text-6xl"
 				>
 					Where craft<br />meets quiet<br />luxury.
 				</h2>
@@ -59,6 +59,15 @@
 					</p>
 				</div>
 
+				<!-- Pull-Quote -->
+				<blockquote use:inView class="reveal-wipe py-4">
+					<p
+						class="font-serif text-2xl leading-snug font-light text-foreground/80 italic lg:text-3xl"
+					>
+						"We believe the details you live with should always be beautiful."
+					</p>
+				</blockquote>
+
 				<!-- Accent image -->
 				<div use:inView class="reveal-slide-right overflow-hidden lg:ml-auto lg:w-3/4">
 					<img
@@ -66,6 +75,40 @@
 						alt="Botanical textile detail"
 						class="aspect-3/2 w-full object-cover"
 					/>
+				</div>
+
+				<!-- Process Story: From Field to Home -->
+				<div use:inView class="reveal-up">
+					<p class="mb-8 text-xs font-medium tracking-[0.3em] text-muted-foreground uppercase">
+						From Field to Home
+					</p>
+					<div class="grid grid-cols-1 gap-8 sm:grid-cols-3">
+						{#each [{ num: '01', title: 'Sourced', text: 'Organic cotton and Belgian linen, responsibly gathered from trusted growers.' }, { num: '02', title: 'Woven', text: 'Skilled mills and careful craft — every thread placed with intention.' }, { num: '03', title: 'Home', text: 'Made to last, made to love. Pieces that become part of your story.' }] as step, i (step.num)}
+							<div use:inView class="reveal-up" style="transition-delay: {i * 150}ms">
+								<span class="mb-2 block font-serif text-3xl font-light text-foreground/20"
+									>{step.num}</span
+								>
+								<h4 class="mb-2 text-sm font-medium tracking-wide uppercase">
+									{step.title}
+								</h4>
+								<p class="text-sm leading-relaxed text-muted-foreground">{step.text}</p>
+							</div>
+						{/each}
+					</div>
+				</div>
+
+				<!-- Key Facts -->
+				<div class="grid grid-cols-3 gap-6 border-y border-border/50 py-12">
+					{#each [{ value: '100%', label: 'Organic materials' }, { value: '3', label: 'Master weavers' }, { value: '∞', label: 'Heirloom quality' }] as fact, i (fact.label)}
+						<div use:inView class="reveal-up text-center" style="transition-delay: {i * 100}ms">
+							<span class="block font-serif text-4xl font-light text-foreground lg:text-5xl"
+								>{fact.value}</span
+							>
+							<span class="mt-2 block text-xs tracking-wide text-muted-foreground uppercase"
+								>{fact.label}</span
+							>
+						</div>
+					{/each}
 				</div>
 
 				<!-- Featured collections preview -->
