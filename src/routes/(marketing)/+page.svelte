@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { SsgoiTransition } from '@ssgoi/svelte';
 	import MagHero from '$lib/components/magazine/MagHero.svelte';
+	import MagLogoReveal from '$lib/components/magazine/MagLogoReveal.svelte';
 	import MagEditorialSpread from '$lib/components/magazine/MagEditorialSpread.svelte';
 	import MagBentoGrid from '$lib/components/magazine/MagBentoGrid.svelte';
 	import MagCraftStrip from '$lib/components/magazine/MagCraftStrip.svelte';
@@ -14,6 +15,7 @@
 
 <SsgoiTransition id="/">
 	<MagHero />
+	<MagLogoReveal />
 	<MagEditorialSpread />
 	<MagBentoGrid />
 	<MagCraftStrip />
