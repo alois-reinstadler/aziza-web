@@ -14,13 +14,13 @@
 			<div class="lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:justify-center lg:pr-16">
 				<p
 					use:inView
-					class="reveal-wipe mb-6 text-xs font-medium tracking-[0.3em] text-muted-foreground uppercase"
+					class="reveal-up mb-6 text-xs font-medium tracking-[0.3em] text-muted-foreground uppercase"
 				>
 					Editorial
 				</p>
 				<h2
 					use:inView
-					class="reveal-wipe mb-8 font-serif text-4xl leading-[1.05] font-light text-black lg:text-6xl"
+					class="reveal-up mb-8 font-serif text-4xl leading-[1.05] font-light text-black lg:text-6xl"
 				>
 					Where craft<br />meets quiet<br />luxury.
 				</h2>
