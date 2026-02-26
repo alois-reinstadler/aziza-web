@@ -42,7 +42,7 @@
 <section
 	data-navbar-dark
 	use:onInView
-	class="flex min-h-screen flex-col items-center justify-center"
+	class="flex flex-col items-center justify-center py-32 lg:py-48"
 >
 	<div class="relative w-full max-w-lg px-8 lg:max-w-xl">
 		<svg
