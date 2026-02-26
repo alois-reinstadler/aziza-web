@@ -2,12 +2,12 @@
 	import { Button } from '$lib/components/ui/button';
 	import { splitChars } from './animations';
 	import hero1 from '$lib/assets/hero-01.jpeg';
+	import { scrollY } from 'svelte/reactivity/window';
 
 	// Animation state
 	let revealed = $state(false);
 	let showText = $state(false);
 	let showCta = $state(false);
-	let scrollY = $state(0);
 
 	const titleTop = splitChars('SPRING');
 	const titleBottom = splitChars('COLLECTION');
@@ -23,15 +23,9 @@
 			clearTimeout(t3);
 		};
 	});
-
-	function handleScroll() {
-		scrollY = window.scrollY;
-	}
 </script>
 
-<svelte:window onscroll={handleScroll} />
-
-<section data-navbar-dark class="relative h-screen w-full overflow-hidden bg-black">
+<section data-navbar-dark class="relative h-screen w-full overflow-hidden">
 	<!-- Curtain reveal via clip-path -->
 	<div
 		class="absolute inset-0 transition-[clip-path] duration-[1200ms] ease-[cubic-bezier(0.77,0,0.175,1)]"
@@ -41,7 +35,7 @@
 			src={hero1}
 			alt="Aziza Spring Collection"
 			class="h-full w-full object-cover transition-transform duration-[2000ms] ease-out"
-			style="transform: scale({revealed ? 1 : 1.05}) translateY({scrollY * 0.3}px)"
+			style="transform: scale({revealed ? 1 : 1.6}) translateY({scrollY.current ?? 0 * 0.3}px)"
 		/>
 		<div class="absolute inset-0 bg-black/30"></div>
 	</div>
@@ -57,7 +51,7 @@
 	<!-- Staggered headline — offset layout -->
 	<div class="absolute inset-0 z-10 flex flex-col justify-between p-8 lg:p-16">
 		<!-- "SPRING" top-left -->
-		<div class="mt-24 lg:mt-32" style="transform: translateY({scrollY * -0.15}px)">
+		<div class="mt-24 lg:mt-32" style="transform: translateY({scrollY.current ?? 0 * -0.15}px)">
 			<h1 class="font-serif text-[12vw] leading-[0.85] font-light text-white lg:text-[10vw]">
 				{#each titleTop as { char, index }}
 					<span
@@ -104,7 +98,10 @@
 			</div>
 
 			<!-- "COLLECTION" bottom-right -->
-			<div class="order-1 text-right lg:order-2" style="transform: translateY({scrollY * -0.1}px)">
+			<div
+				class="order-1 text-right lg:order-2"
+				style="transform: translateY({scrollY.current ?? 0 * -0.1}px)"
+			>
 				<h1 class="font-serif text-[10vw] leading-[0.85] font-light text-white lg:text-[8vw]">
 					{#each titleBottom as { char, index }}
 						<span
@@ -124,7 +121,7 @@
 	<!-- Scroll indicator -->
 	<div
 		class="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 transition-opacity duration-700"
-		style="opacity: {showCta && scrollY < 50 ? 0.5 : 0}"
+		style="opacity: {showCta && (scrollY.current ?? 0) < 50 ? 0.5 : 0}"
 	>
 		<div class="h-12 w-px animate-pulse bg-white/40"></div>
 	</div>

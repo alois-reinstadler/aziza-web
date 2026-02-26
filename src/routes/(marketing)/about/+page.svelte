@@ -109,10 +109,7 @@
 <!-- Manifesto Section -->
 <section data-navbar-dark class="py-24 lg:py-32">
 	<div class="mx-auto max-w-3xl px-6 text-center lg:px-8">
-		<p
-			use:inView
-			class="reveal-up mb-8 font-serif text-2xl leading-relaxed font-light lg:text-3xl"
-		>
+		<p use:inView class="reveal-up mb-8 font-serif text-2xl leading-relaxed font-light lg:text-3xl">
 			Aziza was born from a deep belief that the details you live with should always be beautiful.
 		</p>
 		<p use:inView class="reveal-up mb-6 leading-relaxed text-muted-foreground">
@@ -141,11 +138,7 @@
 		<div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:gap-16">
 			{#each values as value, i}
 				{@const Icon = value.icon}
-				<div
-					use:inView
-					class="reveal-up"
-					style="transition-delay: {i * 100}ms"
-				>
+				<div use:inView class="reveal-up" style="transition-delay: {i * 100}ms">
 					<div class="mb-5 flex h-12 w-12 items-center justify-center border border-border">
 						<Icon class="h-5 w-5 text-foreground/50" />
 					</div>
@@ -170,17 +163,9 @@
 		</h2>
 		<div class="grid grid-cols-1 gap-12 sm:grid-cols-3 lg:gap-16">
 			{#each steps as step, i}
-				<div
-					use:inView
-					class="reveal-up"
-					style="transition-delay: {i * 150}ms"
-				>
+				<div use:inView class="reveal-up" style="transition-delay: {i * 150}ms">
 					<div class="overflow-hidden">
-						<img
-							src={step.image}
-							alt={step.title}
-							class="mb-6 aspect-3/4 w-full object-cover"
-						/>
+						<img src={step.image} alt={step.title} class="mb-6 aspect-3/4 w-full object-cover" />
 					</div>
 					<span class="mb-2 block font-serif text-3xl font-light text-foreground/20"
 						>{step.num}</span

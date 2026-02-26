@@ -8,25 +8,25 @@
 </svelte:head>
 
 <section data-navbar-dark class="pt-32 pb-20">
-	<div class="max-w-7xl mx-auto px-6 lg:px-8">
+	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<!-- Header -->
 		<div class="reveal-up" use:inView>
-			<span class="text-xs font-medium tracking-[0.3em] text-muted-foreground uppercase mb-4 block">
+			<span class="mb-4 block text-xs font-medium tracking-[0.3em] text-muted-foreground uppercase">
 				Collections
 			</span>
-			<h1 class="font-serif text-4xl font-light lg:text-5xl mb-4">Our Collections</h1>
-			<p class="text-muted-foreground max-w-lg mb-16">
+			<h1 class="mb-4 font-serif text-4xl font-light lg:text-5xl">Our Collections</h1>
+			<p class="mb-16 max-w-lg text-muted-foreground">
 				Each collection tells its own story — crafted from the finest natural materials and inspired
 				by the beauty of the botanical world.
 			</p>
 		</div>
 
 		<!-- Grid -->
-		<div class="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12">
+		<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:gap-12">
 			{#each collections as col, i}
 				<div class="reveal-up" use:inView style="transition-delay: {i * 120}ms">
 					<a href={col.href} class="group block">
-						<div class="overflow-hidden mb-4">
+						<div class="mb-4 overflow-hidden">
 							<img
 								src={col.images.hero}
 								alt={col.label}
@@ -34,8 +34,7 @@
 							/>
 						</div>
 						{#if col.tag}
-							<span class="text-xs tracking-[0.2em] text-muted-foreground uppercase"
-								>{col.tag}</span
+							<span class="text-xs tracking-[0.2em] text-muted-foreground uppercase">{col.tag}</span
 							>
 						{/if}
 						<h2 class="mt-1 font-serif text-2xl font-light lg:text-3xl">{col.label}</h2>

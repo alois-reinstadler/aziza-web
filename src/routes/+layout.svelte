@@ -8,6 +8,7 @@
 	import { drill, fade, hero } from '@ssgoi/svelte/view-transitions';
 	import Navbar from '$lib/components/marketing/Navbar.svelte';
 	import Footer from '$lib/components/marketing/Footer.svelte';
+	import MagCursorGlow from '$lib/components/magazine/MagCursorGlow.svelte';
 
 	let { children } = $props();
 
@@ -34,8 +35,9 @@
 	/>
 </svelte:head>
 
-<ModeWatcher defaultMode="light" />
+<ModeWatcher defaultMode="dark" />
 
+<MagCursorGlow />
 <Navbar />
 <Ssgoi {config}>
 	<div class="relative min-h-screen">

@@ -17,7 +17,10 @@
 
 <svelte:head>
 	<title>Journal — Aziza</title>
-	<meta name="description" content="Stories from behind the loom — lookbooks, styling guides, and the craft behind Aziza." />
+	<meta
+		name="description"
+		content="Stories from behind the loom — lookbooks, styling guides, and the craft behind Aziza."
+	/>
 </svelte:head>
 
 <!-- Header -->
@@ -70,11 +73,7 @@
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:gap-12">
 			{#each rest as post, i (post.slug)}
-				<a
-					href="/journal/{post.slug}"
-					class="group block"
-					use:inView
-				>
+				<a href="/journal/{post.slug}" class="group block" use:inView>
 					<div class="reveal-up" style="transition-delay: {i * 120}ms">
 						<div class="mb-4 overflow-hidden">
 							<img

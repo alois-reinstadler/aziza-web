@@ -100,11 +100,7 @@
 			{#each materials as material, i (material.name)}
 				<div use:inView class="reveal-up" style="transition-delay: {i * 120}ms">
 					<div class="mb-6 overflow-hidden">
-						<img
-							src={material.image}
-							alt={material.name}
-							class="aspect-4/5 w-full object-cover"
-						/>
+						<img src={material.image} alt={material.name} class="aspect-4/5 w-full object-cover" />
 					</div>
 					<h3 class="mb-1 font-serif text-xl font-light">{material.name}</h3>
 					<p class="mb-3 text-xs tracking-wide text-muted-foreground/60 uppercase">
@@ -157,9 +153,7 @@
 				<img src={craftImage} alt="Artisan weaving" class="aspect-4/5 w-full object-cover" />
 			</div>
 			<div use:inView class="reveal-up">
-				<p
-					class="mb-3 text-xs font-medium tracking-[0.3em] text-muted-foreground uppercase"
-				>
+				<p class="mb-3 text-xs font-medium tracking-[0.3em] text-muted-foreground uppercase">
 					Our Supply Chain
 				</p>
 				<h2 class="mb-6 font-serif text-3xl font-light lg:text-4xl">From Field to Finished</h2>
@@ -168,14 +162,13 @@
 					without synthetic pesticides and linen flax sways in the Flemish wind.
 				</p>
 				<p class="mb-4 leading-relaxed text-muted-foreground">
-					Our yarns travel to family-run mills in Portugal and Belgium — workshops where
-					generations of weavers have perfected their craft. Here, every thread is placed with
-					intention, every pattern woven with care.
+					Our yarns travel to family-run mills in Portugal and Belgium — workshops where generations
+					of weavers have perfected their craft. Here, every thread is placed with intention, every
+					pattern woven with care.
 				</p>
 				<p class="leading-relaxed text-muted-foreground">
-					The result is a textile that feels alive — organic, never rigid. Pre-washed, tested
-					for over a hundred cycles, and made to become softer and more beautiful with every
-					year.
+					The result is a textile that feels alive — organic, never rigid. Pre-washed, tested for
+					over a hundred cycles, and made to become softer and more beautiful with every year.
 				</p>
 			</div>
 		</div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { inView } from './animations';
+	import { inView, countUp, parallax } from './animations';
 	import { collections } from '$lib/config/collections';
 	import mainImage from '$lib/assets/stock-images/AdobeStock_1710340739.webp';
 	import accentImage from '$lib/assets/stock-images/AdobeStock_1705702729.webp';
@@ -66,7 +66,12 @@
 			<div class="space-y-20 lg:py-32 lg:pl-16">
 				<!-- Main brand image -->
 				<div use:inView class="reveal-up overflow-hidden">
-					<img src={mainImage} alt="Aziza craftsmanship" class="aspect-4/5 w-full object-cover" />
+					<img
+						use:parallax={0.05}
+						src={mainImage}
+						alt="Aziza craftsmanship"
+						class="aspect-4/5 w-full object-cover"
+					/>
 				</div>
 
 				<!-- Brand text block -->
@@ -92,6 +97,7 @@
 				<!-- Accent image -->
 				<div use:inView class="reveal-slide-right overflow-hidden lg:ml-auto lg:w-3/4">
 					<img
+						use:parallax={-0.04}
 						src={accentImage}
 						alt="Botanical textile detail"
 						class="aspect-3/2 w-full object-cover"
@@ -120,16 +126,30 @@
 
 				<!-- Key Facts -->
 				<div class="grid grid-cols-3 gap-6 border-y border-border/50 py-12">
-					{#each [{ value: '100%', label: 'Organic materials' }, { value: '3', label: 'Master weavers' }, { value: '∞', label: 'Heirloom quality' }] as fact, i (fact.label)}
-						<div use:inView class="reveal-up text-center" style="transition-delay: {i * 100}ms">
-							<span class="block font-serif text-4xl font-light text-foreground lg:text-5xl"
-								>{fact.value}</span
-							>
-							<span class="mt-2 block text-xs tracking-wide text-muted-foreground uppercase"
-								>{fact.label}</span
-							>
-						</div>
-					{/each}
+					<div use:inView class="reveal-up text-center">
+						<span
+							use:countUp={{ target: 100, suffix: '%' }}
+							class="block font-serif text-4xl font-light text-foreground lg:text-5xl">0%</span
+						>
+						<span class="mt-2 block text-xs tracking-wide text-muted-foreground uppercase"
+							>Organic materials</span
+						>
+					</div>
+					<div use:inView class="reveal-up text-center" style="transition-delay: 100ms">
+						<span
+							use:countUp={{ target: 3 }}
+							class="block font-serif text-4xl font-light text-foreground lg:text-5xl">0</span
+						>
+						<span class="mt-2 block text-xs tracking-wide text-muted-foreground uppercase"
+							>Master weavers</span
+						>
+					</div>
+					<div use:inView class="reveal-up text-center" style="transition-delay: 200ms">
+						<span class="block font-serif text-4xl font-light text-foreground lg:text-5xl">∞</span>
+						<span class="mt-2 block text-xs tracking-wide text-muted-foreground uppercase"
+							>Heirloom quality</span
+						>
+					</div>
 				</div>
 
 				<!-- Featured collections preview -->
@@ -140,14 +160,16 @@
 								<img
 									src={col.images.hero}
 									alt={col.label}
-									class="aspect-16/9 w-full object-cover transition-transform duration-700 group-hover:scale-105"
+									class="aspect-video w-full object-cover transition-transform duration-700 group-hover:scale-105"
 								/>
 							</div>
 							<div class="mt-4">
 								<span class="text-xs tracking-[0.2em] text-muted-foreground uppercase"
 									>{col.tag}</span
 								>
-								<h3 class="mt-1 font-serif text-2xl font-light">{col.label}</h3>
+								<h3 class="mt-1 font-serif text-2xl font-light text-foreground">
+									{col.label}
+								</h3>
 							</div>
 						</a>
 					</div>

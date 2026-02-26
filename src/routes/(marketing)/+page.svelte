@@ -6,6 +6,7 @@
 	import MagBentoGrid from '$lib/components/magazine/MagBentoGrid.svelte';
 	import MagCraftStrip from '$lib/components/magazine/MagCraftStrip.svelte';
 	import MagNewsletter from '$lib/components/magazine/MagNewsletter.svelte';
+	import MagMarquee from '$lib/components/magazine/MagMarquee.svelte';
 </script>
 
 <svelte:head>
@@ -15,9 +16,14 @@
 
 <SsgoiTransition id="/">
 	<MagHero />
-	<MagLogoReveal />
+	<MagMarquee />
 	<MagEditorialSpread />
+	<MagLogoReveal />
 	<MagBentoGrid />
+	<MagMarquee
+		items={['Handcrafted', 'Organic Cotton', 'Belgian Linen', 'GOTS Certified', 'Made in Europe']}
+		speed={25}
+	/>
 	<MagCraftStrip />
 	<MagNewsletter />
 </SsgoiTransition>

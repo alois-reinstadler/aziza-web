@@ -3,9 +3,7 @@
 	import { journalPosts } from '$lib/config/journal';
 	import { inView } from '$lib/components/magazine/animations';
 
-	const post = $derived(
-		journalPosts.find((p) => p.slug === page.params.slug) ?? journalPosts[0]
-	);
+	const post = $derived(journalPosts.find((p) => p.slug === page.params.slug) ?? journalPosts[0]);
 
 	function formatDate(dateStr: string) {
 		return new Date(dateStr).toLocaleDateString('en-GB', {
@@ -38,11 +36,7 @@
 <section data-navbar-dark class="pb-12">
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div use:inView class="reveal-up overflow-hidden">
-			<img
-				src={post.image}
-				alt={post.title}
-				class="aspect-21/9 w-full object-cover"
-			/>
+			<img src={post.image} alt={post.title} class="aspect-21/9 w-full object-cover" />
 		</div>
 	</div>
 </section>
@@ -64,11 +58,10 @@
 
 				<!-- Pull quote after second paragraph -->
 				{#if i === 1 && post.content.pullQuote}
-					<blockquote
-						use:inView
-						class="reveal-up my-10 border-l-2 border-foreground/20 pl-6"
-					>
-						<p class="font-serif text-xl leading-snug font-light text-foreground/80 italic lg:text-2xl">
+					<blockquote use:inView class="reveal-up my-10 border-l-2 border-foreground/20 pl-6">
+						<p
+							class="font-serif text-xl leading-snug font-light text-foreground/80 italic lg:text-2xl"
+						>
 							"{post.content.pullQuote}"
 						</p>
 					</blockquote>

@@ -54,6 +54,62 @@ export function scrollProgress(node: HTMLElement, varName = '--scroll-progress')
 	};
 }
 
+/** Svelte action: animates a number counting up when element enters viewport */
+export function countUp(
+	node: HTMLElement,
+	options: { target: number; duration?: number; suffix?: string } = { target: 0 }
+) {
+	const { target, duration = 1500, suffix = '' } = options;
+
+	const observer = new IntersectionObserver(
+		(entries) => {
+			for (const entry of entries) {
+				if (entry.isIntersecting) {
+					const start = performance.now();
+					function animate(now: number) {
+						const elapsed = now - start;
+						const progress = Math.min(elapsed / duration, 1);
+						// Ease out cubic
+						const eased = 1 - Math.pow(1 - progress, 3);
+						const current = Math.round(eased * target);
+						node.textContent = current + suffix;
+						if (progress < 1) requestAnimationFrame(animate);
+					}
+					requestAnimationFrame(animate);
+					observer.unobserve(node);
+				}
+			}
+		},
+		{ threshold: 0.5 }
+	);
+
+	observer.observe(node);
+
+	return {
+		destroy() {
+			observer.disconnect();
+		}
+	};
+}
+
+/** Svelte action: adds parallax translateY driven by scroll position */
+export function parallax(node: HTMLElement, speed = 0.1) {
+	function update() {
+		const rect = node.getBoundingClientRect();
+		const center = rect.top + rect.height / 2 - window.innerHeight / 2;
+		node.style.transform = `translateY(${center * speed}px)`;
+	}
+
+	update();
+	window.addEventListener('scroll', update, { passive: true });
+
+	return {
+		destroy() {
+			window.removeEventListener('scroll', update);
+		}
+	};
+}
+
 /** Split text into individual character spans for stagger animation */
 export function splitChars(text: string): { char: string; index: number }[] {
 	return text.split('').map((char, index) => ({ char, index }));
