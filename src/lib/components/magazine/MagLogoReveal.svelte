@@ -10,9 +10,9 @@
 					if (entry.isIntersecting) {
 						node.classList.add('in-view');
 						// Stage 2: fill fades in after stroke draw completes
-						const t1 = setTimeout(() => (fillVisible = true), 2200);
+						const t1 = setTimeout(() => (fillVisible = true), 1600);
 						// Stage 3: tagline fades in
-						const t2 = setTimeout(() => (taglineVisible = true), 2800);
+						const t2 = setTimeout(() => (taglineVisible = true), 2000);
 						observer.unobserve(node);
 
 						return () => {
@@ -42,7 +42,7 @@
 <section
 	data-navbar-dark
 	use:onInView
-	class="flex min-h-screen flex-col items-center justify-center bg-black"
+	class="flex min-h-screen flex-col items-center justify-center"
 >
 	<div class="relative w-full max-w-lg px-8 lg:max-w-xl">
 		<svg
