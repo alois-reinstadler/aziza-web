@@ -3,7 +3,7 @@
 	import { inView } from './animations';
 	import type { Component } from 'svelte';
 
-	import craftImage from '$lib/assets/stock-images/AdobeStock_459093612.webp';
+	import craftImage from '$lib/assets/placeholder/craft-01.jpg';
 	import detailImage from '$lib/assets/stock-images/AdobeStock_687113608.webp';
 
 	const values: { icon: Component; title: string; description: string; detail: string }[] = [

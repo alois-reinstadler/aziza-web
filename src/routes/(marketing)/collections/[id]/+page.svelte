@@ -15,8 +15,8 @@
 	import prod4 from '$lib/assets/stock-images/AdobeStock_1705702729.webp';
 
 	import lifestyle1 from '$lib/assets/stock-images/AdobeStock_1552940722.webp';
-	import lifestyle2 from '$lib/assets/stock-images/AdobeStock_1290119063.webp';
-	import storyImage from '$lib/assets/stock-images/AdobeStock_1809727053.webp';
+	import lifestyle2 from '$lib/assets/placeholder/lifestyle-01.jpg';
+	import storyImage from '$lib/assets/placeholder/story-01.jpg';
 
 	type Collection = {
 		name: string;
@@ -238,7 +238,7 @@
 		{#each productPairs as pair, i (i)}
 			<!-- Lifestyle image -->
 			<div use:inView class="reveal-up mb-12 overflow-hidden">
-				<div class="relative aspect-[21/9] overflow-hidden">
+				<div class="relative aspect-21/9 overflow-hidden">
 					<img
 						src={lifestyleImages[i].src}
 						alt={lifestyleImages[i].alt}
