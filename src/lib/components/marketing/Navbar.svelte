@@ -3,6 +3,14 @@
 	import { Menu, X, Search, ShoppingBag } from '@lucide/svelte';
 	import logo from '$lib/assets/logo_regular.svg';
 	import { scrollY } from 'svelte/reactivity/window';
+	import { cn } from '$lib/utils';
+
+	type Props = {
+		cartCount?: number;
+		onCartClick?: () => void;
+	};
+
+	let { cartCount = 0, onCartClick }: Props = $props();
 
 	let menuOpen = $state(false);
 	let scrolled = $derived(scrollY.current && scrollY.current > 60);
@@ -29,9 +37,11 @@
 </script>
 
 <header
-	class="fixed top-0 right-0 left-0 z-50 transition-all duration-300 {scrolled
-		? 'border-b border-border shadow-sm backdrop-blur-sm'
-		: 'bg-transparent'}"
+	class={cn(
+		'fixed top-0 right-0 left-0 z-50 border-b border-transparent transition-all duration-300',
+		scrolled ? 'border-border/40 shadow-sm backdrop-blur-sm' : 'bg-transparent'
+	)}
+	style="view-transition-name: navbar;"
 >
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="flex h-16 items-center justify-between lg:h-20">
@@ -64,8 +74,17 @@
 				<Button variant="ghost" size="icon" aria-label="Search">
 					<Search />
 				</Button>
-				<Button variant="ghost" size="icon" aria-label="Cart">
-					<ShoppingBag />
+				<Button variant="ghost" size="icon" aria-label="Cart" onclick={onCartClick}>
+					<div class="relative">
+						<ShoppingBag />
+						{#if cartCount > 0}
+							<span
+								class="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-foreground text-[10px] font-medium text-background"
+							>
+								{cartCount}
+							</span>
+						{/if}
+					</div>
 				</Button>
 				<Button
 					variant="ghost"
@@ -100,3 +119,9 @@
 		</div>
 	{/if}
 </header>
+
+<style>
+	:global(::view-transition-group(navbar)) {
+		z-index: 100;
+	}
+</style>

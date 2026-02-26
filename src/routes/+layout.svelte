@@ -9,8 +9,13 @@
 	import Navbar from '$lib/components/marketing/Navbar.svelte';
 	import Footer from '$lib/components/marketing/Footer.svelte';
 	import MagCursorGlow from '$lib/components/magazine/MagCursorGlow.svelte';
+	import CartDrawer from '$lib/components/shop/CartDrawer.svelte';
 
-	let { children } = $props();
+	let { children, data } = $props();
+
+	let cartOpen = $state(false);
+	const cart = $derived(data.cart);
+	const cartCount = $derived(cart?.totalQuantity ?? 0);
 
 	const config = {
 		transitions: [
@@ -38,7 +43,8 @@
 <ModeWatcher defaultMode="dark" />
 
 <MagCursorGlow />
-<Navbar />
+<Navbar {cartCount} onCartClick={() => (cartOpen = true)} />
+<CartDrawer bind:open={cartOpen} {cart} />
 <Ssgoi {config}>
 	<div class="relative min-h-screen">
 		{@render children()}
