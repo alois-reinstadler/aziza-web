@@ -10,12 +10,19 @@
 	import Footer from '$lib/components/marketing/Footer.svelte';
 	import MagCursorGlow from '$lib/components/magazine/MagCursorGlow.svelte';
 	import CartDrawer from '$lib/components/shop/CartDrawer.svelte';
+	import { onMount } from 'svelte';
 
 	let { children, data } = $props();
 
 	let cartOpen = $state(false);
 	const cart = $derived(data.cart);
 	const cartCount = $derived(cart?.totalQuantity ?? 0);
+
+	onMount(() => {
+		const handler = () => (cartOpen = true);
+		window.addEventListener('cart-updated', handler);
+		return () => window.removeEventListener('cart-updated', handler);
+	});
 
 	const config = {
 		transitions: [
