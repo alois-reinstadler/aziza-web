@@ -20,7 +20,6 @@
 <MagMarquee />
 <MagStickyGrid />
 <MagEditorialSpread />
-<MagLogoReveal />
 <MagBentoGrid />
 <MagFeatureScroll />
 <MagCraftStrip />

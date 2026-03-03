@@ -306,8 +306,8 @@
 				</button>
 			</div>
 		</div>
-		<div class="nav-top-line" class:nav-top-line--visible={scrolled && !menuOpen}></div>
 	</div>
+	<div class="nav-top-line" class:nav-top-line--visible={scrolled && !menuOpen}></div>
 </header>
 
 <!-- Fullscreen overlay -->
@@ -323,8 +323,7 @@
 					class="nav-link-large"
 					data-nav="bottom-link"
 					data-nav-number={link.num}
-					onclick={toggleMenu}
-				>
+					>
 					{link.label}
 				</a>
 			</div>
@@ -357,14 +356,14 @@
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
-		height: 4rem;
+		padding: 1.25rem 0;
 		display: flex;
 		position: relative;
 	}
 
 	@media (min-width: 1024px) {
 		.nav-top {
-			height: 5rem;
+			padding: 1.5rem 0;
 		}
 	}
 
@@ -382,11 +381,8 @@
 	}
 
 	.nav-top-line {
-		position: absolute;
 		width: 100%;
 		height: 1px;
-		bottom: 0;
-		left: 0;
 		background: rgba(153, 153, 153, 0.3);
 		opacity: 0;
 		transition: opacity 0.3s ease;
@@ -412,6 +408,12 @@
 		z-index: 2;
 	}
 
+	.nav-menu-btn::before {
+		content: '';
+		position: absolute;
+		inset: -0.75rem;
+	}
+
 	.nav-menu-line {
 		background-color: white;
 		width: 100%;
@@ -433,7 +435,7 @@
 	/* ── Bottom overlay ────────────────────── */
 	.nav-bottom-wrapper {
 		z-index: 55;
-		background-color: #fff9eee6;
+		background-color: #fff9ee;
 		flex-flow: column;
 		justify-content: space-evenly;
 		align-items: stretch;
