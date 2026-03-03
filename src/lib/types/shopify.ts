@@ -38,6 +38,17 @@ export interface ShopifyProduct {
 	createdAt: string;
 }
 
+export interface ShopifyPageInfo {
+	hasNextPage: boolean;
+	endCursor: string | null;
+}
+
+export interface ShopifyCollectionSummary {
+	id: string;
+	handle: string;
+	title: string;
+}
+
 export interface ShopifyCollection {
 	id: string;
 	handle: string;

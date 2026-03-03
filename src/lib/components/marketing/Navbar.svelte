@@ -2,7 +2,7 @@
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import { Button } from '$lib/components/ui/button';
-	import { ShoppingBag } from '@lucide/svelte';
+	import { ShoppingBag, Search } from '@lucide/svelte';
 	import logo from '$lib/assets/logo_regular.svg';
 	import { scrollY } from 'svelte/reactivity/window';
 	import { cn } from '$lib/utils';
@@ -273,6 +273,18 @@
 
 			<div class="nav-top-right">
 				{#if isShopRoute}
+					<Button
+						variant="ghost"
+						size="icon"
+						aria-label="Search"
+						href="/shop/search"
+						class={cn(
+							'transition-colors duration-300',
+							menuOpen ? 'text-[#1e1d1a]' : isDark ? 'text-white' : 'text-black'
+						)}
+					>
+						<Search class="h-5 w-5" />
+					</Button>
 					<Button
 						variant="ghost"
 						size="icon"

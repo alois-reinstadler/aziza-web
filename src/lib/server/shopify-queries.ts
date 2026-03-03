@@ -1,5 +1,10 @@
 import { storefront } from './shopify';
-import type { ShopifyProduct, ShopifyCart } from '$lib/types/shopify';
+import type {
+	ShopifyProduct,
+	ShopifyCart,
+	ShopifyPageInfo,
+	ShopifyCollectionSummary
+} from '$lib/types/shopify';
 
 const PRODUCT_FIELDS = `
 	id
@@ -121,22 +126,34 @@ const CART_FIELDS = `
 
 export type ProductSortKey = 'CREATED_AT' | 'PRICE' | 'TITLE' | 'BEST_SELLING';
 
+export interface ProductsResult {
+	products: ShopifyProduct[];
+	pageInfo: ShopifyPageInfo;
+}
+
 export async function getProducts(
 	first = 24,
 	sortKey: ProductSortKey = 'CREATED_AT',
-	reverse = true
-): Promise<ShopifyProduct[]> {
-	const data = await storefront<{ products: { nodes: ShopifyProduct[] } }>(
-		`query Products($first: Int!, $sortKey: ProductSortKeys, $reverse: Boolean) {
-			products(first: $first, sortKey: $sortKey, reverse: $reverse) {
+	reverse = true,
+	after?: string
+): Promise<ProductsResult> {
+	const data = await storefront<{
+		products: { nodes: ShopifyProduct[]; pageInfo: ShopifyPageInfo };
+	}>(
+		`query Products($first: Int!, $sortKey: ProductSortKeys, $reverse: Boolean, $after: String) {
+			products(first: $first, sortKey: $sortKey, reverse: $reverse, after: $after) {
 				nodes {
 					${PRODUCT_FIELDS}
 				}
+				pageInfo {
+					hasNextPage
+					endCursor
+				}
 			}
 		}`,
-		{ first, sortKey, reverse }
+		{ first, sortKey, reverse, after }
 	);
-	return data.products.nodes;
+	return { products: data.products.nodes, pageInfo: data.products.pageInfo };
 }
 
 export async function getProductByHandle(handle: string): Promise<ShopifyProduct | null> {
@@ -149,6 +166,87 @@ export async function getProductByHandle(handle: string): Promise<ShopifyProduct
 		{ handle }
 	);
 	return data.product;
+}
+
+export async function getCollections(first = 20): Promise<ShopifyCollectionSummary[]> {
+	const data = await storefront<{ collections: { nodes: ShopifyCollectionSummary[] } }>(
+		`query Collections($first: Int!) {
+			collections(first: $first) {
+				nodes {
+					id
+					handle
+					title
+				}
+			}
+		}`,
+		{ first }
+	);
+	return data.collections.nodes;
+}
+
+export async function getCollectionProducts(
+	handle: string,
+	first = 24,
+	sortKey: ProductSortKey = 'CREATED_AT',
+	reverse = true,
+	after?: string
+): Promise<ProductsResult> {
+	const data = await storefront<{
+		collection: { products: { nodes: ShopifyProduct[]; pageInfo: ShopifyPageInfo } } | null;
+	}>(
+		`query CollectionProducts($handle: String!, $first: Int!, $sortKey: ProductCollectionSortKeys, $reverse: Boolean, $after: String) {
+			collection(handle: $handle) {
+				products(first: $first, sortKey: $sortKey, reverse: $reverse, after: $after) {
+					nodes {
+						${PRODUCT_FIELDS}
+					}
+					pageInfo {
+						hasNextPage
+						endCursor
+					}
+				}
+			}
+		}`,
+		{ handle, first, sortKey, reverse, after }
+	);
+	if (!data.collection) return { products: [], pageInfo: { hasNextPage: false, endCursor: null } };
+	return { products: data.collection.products.nodes, pageInfo: data.collection.products.pageInfo };
+}
+
+export async function searchProducts(
+	query: string,
+	first = 24
+): Promise<ShopifyProduct[]> {
+	const data = await storefront<{
+		products: { nodes: ShopifyProduct[] };
+	}>(
+		`query SearchProducts($query: String!, $first: Int!) {
+			products(first: $first, query: $query) {
+				nodes {
+					${PRODUCT_FIELDS}
+				}
+			}
+		}`,
+		{ query, first }
+	);
+	return data.products.nodes;
+}
+
+export async function getRelatedProducts(
+	productId: string,
+	first = 4
+): Promise<ShopifyProduct[]> {
+	const data = await storefront<{
+		productRecommendations: ShopifyProduct[];
+	}>(
+		`query RelatedProducts($productId: ID!) {
+			productRecommendations(productId: $productId) {
+				${PRODUCT_FIELDS}
+			}
+		}`,
+		{ productId }
+	);
+	return (data.productRecommendations ?? []).slice(0, first);
 }
 
 // --- Cart Queries & Mutations ---
