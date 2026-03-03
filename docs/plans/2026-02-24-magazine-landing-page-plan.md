@@ -15,6 +15,7 @@
 ### Task 1: Create feature branch and animation utilities
 
 **Files:**
+
 - Create: `src/lib/components/magazine/animations.ts`
 
 **Step 1: Create the feature branch**
@@ -103,6 +104,7 @@ git commit -m "feat: add shared animation utilities for magazine landing"
 ### Task 2: Build MagHero — Cinematic Cover
 
 **Files:**
+
 - Create: `src/lib/components/magazine/MagHero.svelte`
 
 **Step 1: Create the MagHero component**
@@ -178,8 +180,8 @@ Create `src/lib/components/magazine/MagHero.svelte`:
 							opacity: {showText ? 1 : 0};
 							transform: translateY({showText ? 0 : 40}px);
 							transition-delay: {index * 60}ms;
-						"
-					>{char}</span>
+						">{char}</span
+					>
 				{/each}
 			</h1>
 		</div>
@@ -189,7 +191,9 @@ Create `src/lib/components/magazine/MagHero.svelte`:
 			<!-- Subtext + CTA -->
 			<div
 				class="order-2 max-w-sm lg:order-1"
-				style="opacity: {showCta ? 1 : 0}; transform: translateY({showCta ? 0 : 20}px); transition: all 700ms ease-out"
+				style="opacity: {showCta ? 1 : 0}; transform: translateY({showCta
+					? 0
+					: 20}px); transition: all 700ms ease-out"
 			>
 				<p class="mb-6 text-sm leading-relaxed text-white/60 lg:text-base">
 					Thoughtfully crafted textiles that transform everyday living into something extraordinary.
@@ -223,8 +227,8 @@ Create `src/lib/components/magazine/MagHero.svelte`:
 								opacity: {showText ? 1 : 0};
 								transform: translateY({showText ? 0 : 40}px);
 								transition-delay: {(index + titleTop.length) * 50}ms;
-							"
-						>{char}</span>
+							">{char}</span
+						>
 					{/each}
 				</h1>
 			</div>
@@ -253,6 +257,7 @@ git commit -m "feat: add cinematic hero with curtain reveal and staggered typogr
 ### Task 3: Build MagEditorialSpread — Brand Story + Featured Collections
 
 **Files:**
+
 - Create: `src/lib/components/magazine/MagEditorialSpread.svelte`
 
 **Step 1: Create the component**
@@ -296,10 +301,7 @@ Create `src/lib/components/magazine/MagEditorialSpread.svelte`:
 			</div>
 
 			<!-- Vertical divider — draws itself on scroll -->
-			<div
-				use:scrollProgress
-				class="hidden lg:block"
-			>
+			<div use:scrollProgress class="hidden lg:block">
 				<div
 					class="mx-auto h-full w-px bg-border"
 					style="transform: scaleY(var(--scroll-progress, 0)); transform-origin: top"
@@ -310,11 +312,7 @@ Create `src/lib/components/magazine/MagEditorialSpread.svelte`:
 			<div class="space-y-20 lg:py-32 lg:pl-16">
 				<!-- Main brand image -->
 				<div use:inView class="reveal-up overflow-hidden">
-					<img
-						src={mainImage}
-						alt="Aziza craftsmanship"
-						class="aspect-4/5 w-full object-cover"
-					/>
+					<img src={mainImage} alt="Aziza craftsmanship" class="aspect-4/5 w-full object-cover" />
 				</div>
 
 				<!-- Brand text block -->
@@ -339,7 +337,7 @@ Create `src/lib/components/magazine/MagEditorialSpread.svelte`:
 
 				<!-- Featured collections preview -->
 				{#each featured as col, i (col.id)}
-					<div use:inView class="{i % 2 === 0 ? 'reveal-slide-left' : 'reveal-slide-right'}">
+					<div use:inView class={i % 2 === 0 ? 'reveal-slide-left' : 'reveal-slide-right'}>
 						<a href={col.href} class="group block">
 							<div class="overflow-hidden">
 								<img
@@ -349,7 +347,9 @@ Create `src/lib/components/magazine/MagEditorialSpread.svelte`:
 								/>
 							</div>
 							<div class="mt-4">
-								<span class="text-xs tracking-[0.2em] text-muted-foreground uppercase">{col.tag}</span>
+								<span class="text-xs tracking-[0.2em] text-muted-foreground uppercase"
+									>{col.tag}</span
+								>
 								<h3 class="mt-1 font-serif text-2xl font-light">{col.label}</h3>
 							</div>
 						</a>
@@ -374,7 +374,9 @@ Create `src/lib/components/magazine/MagEditorialSpread.svelte`:
 	.reveal-up {
 		opacity: 0;
 		transform: translateY(40px);
-		transition: opacity 700ms ease-out, transform 700ms ease-out;
+		transition:
+			opacity 700ms ease-out,
+			transform 700ms ease-out;
 	}
 	.reveal-up:global(.in-view) {
 		opacity: 1;
@@ -385,7 +387,9 @@ Create `src/lib/components/magazine/MagEditorialSpread.svelte`:
 	.reveal-slide-left {
 		opacity: 0;
 		transform: translateX(-40px);
-		transition: opacity 700ms ease-out, transform 700ms ease-out;
+		transition:
+			opacity 700ms ease-out,
+			transform 700ms ease-out;
 	}
 	.reveal-slide-left:global(.in-view) {
 		opacity: 1;
@@ -396,7 +400,9 @@ Create `src/lib/components/magazine/MagEditorialSpread.svelte`:
 	.reveal-slide-right {
 		opacity: 0;
 		transform: translateX(40px);
-		transition: opacity 700ms ease-out, transform 700ms ease-out;
+		transition:
+			opacity 700ms ease-out,
+			transform 700ms ease-out;
 	}
 	.reveal-slide-right:global(.in-view) {
 		opacity: 1;
@@ -417,6 +423,7 @@ git commit -m "feat: add editorial spread with sticky layout and scroll animatio
 ### Task 4: Build MagBentoGrid — Collections Bento
 
 **Files:**
+
 - Create: `src/lib/components/magazine/MagBentoGrid.svelte`
 
 **Step 1: Create the component**
@@ -430,17 +437,12 @@ Create `src/lib/components/magazine/MagBentoGrid.svelte`:
 
 	// Bento layout classes: first tile large, two medium, one wide
 	const layoutClasses = [
-		'col-span-2 row-span-2',  // large feature
-		'col-span-1 row-span-1',  // medium
-		'col-span-1 row-span-1',  // medium
-		'col-span-2 row-span-1'   // wide
+		'col-span-2 row-span-2', // large feature
+		'col-span-1 row-span-1', // medium
+		'col-span-1 row-span-1', // medium
+		'col-span-2 row-span-1' // wide
 	];
-	const aspectClasses = [
-		'aspect-square',
-		'aspect-3/4',
-		'aspect-3/4',
-		'aspect-[2/1]'
-	];
+	const aspectClasses = ['aspect-square', 'aspect-3/4', 'aspect-3/4', 'aspect-[2/1]'];
 </script>
 
 <section data-navbar-dark class="py-24 lg:py-32">
@@ -475,20 +477,30 @@ Create `src/lib/components/magazine/MagBentoGrid.svelte`:
 							alt={col.label}
 							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
 						/>
-						<div class="absolute inset-0 bg-black/20 transition-colors duration-500 group-hover:bg-black/40"></div>
+						<div
+							class="absolute inset-0 bg-black/20 transition-colors duration-500 group-hover:bg-black/40"
+						></div>
 
 						<!-- Tag -->
-						<span class="absolute top-4 left-4 text-[10px] font-medium tracking-[0.2em] text-white/70 uppercase">
+						<span
+							class="absolute top-4 left-4 text-[10px] font-medium tracking-[0.2em] text-white/70 uppercase"
+						>
 							{col.tag}
 						</span>
 
 						<!-- Title overlay -->
 						<div class="absolute inset-x-0 bottom-0 p-4 lg:p-6">
-							<h3 class="font-serif text-xl font-light text-white lg:text-2xl {i === 0 ? 'lg:text-3xl' : ''}">
+							<h3
+								class="font-serif text-xl font-light text-white lg:text-2xl {i === 0
+									? 'lg:text-3xl'
+									: ''}"
+							>
 								{col.label}
 							</h3>
 							<!-- Description appears on hover -->
-							<p class="mt-2 max-w-xs text-sm text-white/0 transition-colors duration-500 group-hover:text-white/70">
+							<p
+								class="mt-2 max-w-xs text-sm text-white/0 transition-colors duration-500 group-hover:text-white/70"
+							>
 								{col.description}
 							</p>
 						</div>
@@ -503,7 +515,9 @@ Create `src/lib/components/magazine/MagBentoGrid.svelte`:
 	.bento-tile {
 		opacity: 0;
 		transform: scale(0.95);
-		transition: opacity 600ms ease-out, transform 600ms ease-out;
+		transition:
+			opacity 600ms ease-out,
+			transform 600ms ease-out;
 	}
 	.bento-tile:global(.in-view) {
 		opacity: 1;
@@ -513,7 +527,9 @@ Create `src/lib/components/magazine/MagBentoGrid.svelte`:
 	.reveal-up {
 		opacity: 0;
 		transform: translateY(30px);
-		transition: opacity 600ms ease-out, transform 600ms ease-out;
+		transition:
+			opacity 600ms ease-out,
+			transform 600ms ease-out;
 	}
 	.reveal-up:global(.in-view) {
 		opacity: 1;
@@ -534,6 +550,7 @@ git commit -m "feat: add bento grid collections with staggered scroll reveals"
 ### Task 5: Build MagCraftStrip — Horizontal Values Filmstrip
 
 **Files:**
+
 - Create: `src/lib/components/magazine/MagCraftStrip.svelte`
 
 **Step 1: Create the component**
@@ -571,10 +588,7 @@ Create `src/lib/components/magazine/MagCraftStrip.svelte`:
 <section data-navbar-dark class="relative overflow-hidden py-24 lg:py-0">
 	<!-- Desktop: scroll-driven horizontal strip -->
 	<div class="hidden lg:block">
-		<div
-			use:scrollProgress
-			class="relative h-[300vh]"
-		>
+		<div use:scrollProgress class="relative h-[300vh]">
 			<div class="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
 				<div class="mb-12 px-16">
 					<p class="mb-3 text-xs font-medium tracking-[0.3em] text-muted-foreground uppercase">
@@ -647,6 +661,7 @@ git commit -m "feat: add horizontal filmstrip values section with scroll-driven 
 ### Task 6: Build MagNewsletter — Typography-Focused Newsletter
 
 **Files:**
+
 - Create: `src/lib/components/magazine/MagNewsletter.svelte`
 
 **Step 1: Create the component**
@@ -679,10 +694,9 @@ Create `src/lib/components/magazine/MagNewsletter.svelte`:
 			class="headline-container mb-6 font-serif text-[8vw] leading-[0.9] font-light text-foreground lg:text-[5vw]"
 		>
 			{#each headline as { char, index }}
-				<span
-					class="headline-char inline-block"
-					style="transition-delay: {index * 40}ms"
-				>{char === ' ' ? '\u00A0' : char}</span>
+				<span class="headline-char inline-block" style="transition-delay: {index * 40}ms"
+					>{char === ' ' ? '\u00A0' : char}</span
+				>
 			{/each}
 		</h2>
 
@@ -695,7 +709,7 @@ Create `src/lib/components/magazine/MagNewsletter.svelte`:
 		</p>
 
 		{#if submitted}
-			<p class="font-serif text-2xl font-light italic text-foreground">Thank you for joining.</p>
+			<p class="font-serif text-2xl font-light text-foreground italic">Thank you for joining.</p>
 		{:else}
 			<form
 				onsubmit={handleSubmit}
@@ -709,10 +723,7 @@ Create `src/lib/components/magazine/MagNewsletter.svelte`:
 					required
 					class="flex-1 rounded-none border-foreground/20 focus-visible:border-foreground/60"
 				/>
-				<Button
-					type="submit"
-					class="shrink-0 rounded-none px-8 text-sm tracking-wide"
-				>
+				<Button type="submit" class="shrink-0 rounded-none px-8 text-sm tracking-wide">
 					Subscribe
 				</Button>
 			</form>
@@ -725,7 +736,9 @@ Create `src/lib/components/magazine/MagNewsletter.svelte`:
 	.headline-char {
 		opacity: 0;
 		transform: translateY(20px);
-		transition: opacity 500ms ease-out, transform 500ms ease-out;
+		transition:
+			opacity 500ms ease-out,
+			transform 500ms ease-out;
 	}
 	.headline-container:global(.in-view) .headline-char {
 		opacity: 1;
@@ -735,7 +748,9 @@ Create `src/lib/components/magazine/MagNewsletter.svelte`:
 	.reveal-up {
 		opacity: 0;
 		transform: translateY(30px);
-		transition: opacity 600ms ease-out, transform 600ms ease-out;
+		transition:
+			opacity 600ms ease-out,
+			transform 600ms ease-out;
 	}
 	.reveal-up:global(.in-view) {
 		opacity: 1;
@@ -756,6 +771,7 @@ git commit -m "feat: add typography-focused newsletter with staggered letter ani
 ### Task 7: Wire up the landing page
 
 **Files:**
+
 - Modify: `src/routes/(marketing)/+page.svelte`
 
 **Step 1: Replace page content with magazine components**
@@ -806,6 +822,7 @@ bun dev
 **Step 2: Check each section visually**
 
 Verify in browser at `http://localhost:5173`:
+
 - Hero curtain animation plays on load
 - Hero letter stagger works
 - Hero parallax on scroll

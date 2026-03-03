@@ -1,10 +1,14 @@
 <script lang="ts">
-	import { SsgoiTransition } from '@ssgoi/svelte';
-	import HeroSection from '$lib/components/marketing/HeroSection.svelte';
-	import CollectionsSection from '$lib/components/marketing/CollectionsSection.svelte';
-	import BrandStory from '$lib/components/marketing/BrandStory.svelte';
-	import ValuesSection from '$lib/components/marketing/ValuesSection.svelte';
-	import NewsletterSection from '$lib/components/marketing/NewsletterSection.svelte';
+	import MagHero from '$lib/components/magazine/MagHero.svelte';
+	import MagMarquee from '$lib/components/magazine/MagMarquee.svelte';
+	import MagStickyGrid from '$lib/components/magazine/MagStickyGrid.svelte';
+	import MagEditorialSpread from '$lib/components/magazine/MagEditorialSpread.svelte';
+	import MagLogoReveal from '$lib/components/magazine/MagLogoReveal.svelte';
+	import MagBentoGrid from '$lib/components/magazine/MagBentoGrid.svelte';
+	import MagFeatureScroll from '$lib/components/magazine/MagFeatureScroll.svelte';
+	import MagCraftStrip from '$lib/components/magazine/MagCraftStrip.svelte';
+	import MagRingHero from '$lib/components/magazine/MagRingHero.svelte';
+	import MagNewsletter from '$lib/components/magazine/MagNewsletter.svelte';
 </script>
 
 <svelte:head>
@@ -12,10 +16,13 @@
 	<meta name="description" content="Thoughtfully crafted home textiles for modern living." />
 </svelte:head>
 
-<SsgoiTransition id="/">
-	<HeroSection />
-	<CollectionsSection />
-	<BrandStory />
-	<ValuesSection />
-	<NewsletterSection />
-</SsgoiTransition>
+<MagHero />
+<MagMarquee />
+<MagStickyGrid />
+<MagEditorialSpread />
+<MagLogoReveal />
+<MagBentoGrid />
+<MagFeatureScroll />
+<MagCraftStrip />
+<MagRingHero />
+<MagNewsletter />
