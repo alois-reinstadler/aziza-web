@@ -96,7 +96,15 @@
 				</a>
 			</div>
 		{:else if data.products.length > 0}
-			<div class="grid grid-cols-2 gap-6 lg:grid-cols-3 lg:gap-8">
+			{#if data.isPopular}
+				<p
+					use:inView
+					class="reveal-up mb-6 text-xs font-medium tracking-[0.3em] text-muted-foreground uppercase"
+				>
+					Popular Products
+				</p>
+			{/if}
+			<div class="grid grid-cols-2 gap-6 lg:gap-8 {data.isPopular ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}">
 				{#each data.products as product, i (product.id)}
 					<ProductCard
 						{product}
@@ -105,12 +113,6 @@
 						adding={addingId === product.id}
 					/>
 				{/each}
-			</div>
-		{:else}
-			<div use:inView class="reveal-up py-20 text-center">
-				<p class="font-serif text-xl font-light text-muted-foreground">
-					Search our collection
-				</p>
 			</div>
 		{/if}
 	</div>
