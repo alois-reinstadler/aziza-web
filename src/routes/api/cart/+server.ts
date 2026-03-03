@@ -1,11 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import {
-	createCart,
-	addToCart,
-	updateCartLine,
-	removeCartLine
-} from '$lib/server/shopify-queries';
+import { createCart, addToCart, updateCartLine, removeCartLine } from '$lib/server/shopify-queries';
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	const body = await request.json();

@@ -127,7 +127,7 @@ export async function getProducts(
 	reverse = true
 ): Promise<ShopifyProduct[]> {
 	const data = await storefront<{ products: { nodes: ShopifyProduct[] } }>(
-		`query Products($first: Int!, $sortKey: ProductSortKey!, $reverse: Boolean!) {
+		`query Products($first: Int!, $sortKey: ProductSortKeys, $reverse: Boolean) {
 			products(first: $first, sortKey: $sortKey, reverse: $reverse) {
 				nodes {
 					${PRODUCT_FIELDS}

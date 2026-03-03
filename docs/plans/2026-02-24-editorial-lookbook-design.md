@@ -14,7 +14,7 @@ Add 3 new content blocks to the right scrolling column. Left sticky column uncha
    - 01 Sourced / Organic cotton + Belgian linen
    - 02 Woven / Skilled mills, careful craft
    - 03 Home / Made to last, made to love
-   Staggered fade-in.
+     Staggered fade-in.
 6. **Key Facts** — 3 large serif numbers as visual breakers: "100%" (organic), "3" (master weavers), "∞" (heirloom quality). Large numbers + small labels.
 7. Featured collections (existing)
 

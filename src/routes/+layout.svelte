@@ -4,13 +4,12 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { ModeWatcher } from 'mode-watcher';
-	import { Ssgoi, type SsgoiConfig } from '@ssgoi/svelte';
-	import { drill, fade, hero } from '@ssgoi/svelte/view-transitions';
+	import { onNavigate } from '$app/navigation';
 	import Navbar from '$lib/components/marketing/Navbar.svelte';
 	import Footer from '$lib/components/marketing/Footer.svelte';
 	import MagCursorGlow from '$lib/components/magazine/MagCursorGlow.svelte';
 	import CartDrawer from '$lib/components/shop/CartDrawer.svelte';
-	import { onMount } from 'svelte';
+	import Toaster from '$lib/components/ui/sonner/sonner.svelte';
 
 	let { children, data } = $props();
 
@@ -18,23 +17,15 @@
 	const cart = $derived(data.cart);
 	const cartCount = $derived(cart?.totalQuantity ?? 0);
 
-	onMount(() => {
-		const handler = () => (cartOpen = true);
-		window.addEventListener('cart-updated', handler);
-		return () => window.removeEventListener('cart-updated', handler);
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return;
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
 	});
-
-	const config = {
-		transitions: [
-			{
-				from: '/',
-				to: '/collections/*',
-				transition: hero(),
-				symmetric: true
-			}
-		],
-		defaultTransition: fade()
-	} satisfies SsgoiConfig;
 </script>
 
 <svelte:head>
@@ -48,15 +39,14 @@
 </svelte:head>
 
 <ModeWatcher defaultMode="dark" />
+<Toaster position="bottom-right" />
 
 <MagCursorGlow />
 <Navbar {cartCount} onCartClick={() => (cartOpen = true)} />
 <CartDrawer bind:open={cartOpen} {cart} />
-<Ssgoi {config}>
-	<div class="relative min-h-screen">
-		{@render children()}
-	</div>
-</Ssgoi>
+<div class="relative min-h-screen">
+	{@render children()}
+</div>
 <Footer />
 
 <div style="display:none">

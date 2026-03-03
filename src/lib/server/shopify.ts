@@ -10,13 +10,14 @@ interface StorefrontResponse<T> {
 
 export async function storefront<T>(
 	query: string,
-	variables: Record<string, unknown> = {}
+	variables: Record<string, unknown> = {},
+	customFetch: typeof fetch = fetch
 ): Promise<T> {
-	const response = await fetch(API_URL, {
+	const response = await customFetch(API_URL, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			'X-Shopify-Storefront-Access-Token': PRIVATE_SHOPIFY_STOREFRONT_API_TOKEN
+			'Shopify-Storefront-Private-Token': PRIVATE_SHOPIFY_STOREFRONT_API_TOKEN
 		},
 		body: JSON.stringify({ query, variables })
 	});

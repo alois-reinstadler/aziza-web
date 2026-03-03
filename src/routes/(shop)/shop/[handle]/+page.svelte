@@ -3,6 +3,8 @@
 	import { inView } from '$lib/components/magazine/animations';
 	import { invalidateAll } from '$app/navigation';
 	import { Minus, Plus } from '@lucide/svelte';
+	import { toast } from 'svelte-sonner';
+	import CartToast from '$lib/components/shop/CartToast.svelte';
 
 	let { data } = $props();
 
@@ -38,8 +40,14 @@
 				})
 			});
 			await invalidateAll();
-			// Dispatch event so layout can open drawer
-			window.dispatchEvent(new CustomEvent('cart-updated'));
+			toast(product.title, {
+				unstyled: true,
+				component: CartToast,
+				componentProps: {
+					title: product.title,
+					image: product.featuredImage?.url ?? null
+				}
+			});
 		} finally {
 			adding = false;
 		}

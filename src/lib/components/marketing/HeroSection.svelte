@@ -20,7 +20,10 @@
 	});
 </script>
 
-<section data-navbar-dark class="relative flex min-h-screen items-end overflow-hidden pb-20 lg:pb-28">
+<section
+	data-navbar-dark
+	class="relative flex min-h-screen items-end overflow-hidden pb-20 lg:pb-28"
+>
 	{#each slides as slide, i (i)}
 		<div
 			class="absolute inset-0 transition-opacity duration-1000 ease-in-out"

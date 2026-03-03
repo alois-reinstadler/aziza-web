@@ -17,6 +17,7 @@ Integrate Shopify Storefront API using raw `fetch` (no SDK). Server-side data lo
 ### Storefront API Client (`src/lib/server/shopify.ts`)
 
 Thin typed wrapper around `fetch`:
+
 - Single `storefront(query, variables)` function
 - Uses `PRIVATE_SHOPIFY_STOREFRONT_API_TOKEN` server-side
 - Endpoint: `https://{domain}/api/2026-01/graphql.json`
@@ -98,6 +99,7 @@ Thin typed wrapper around `fetch`:
 ## Types
 
 All Shopify response types defined in `src/lib/types/shopify.ts`:
+
 - `ShopifyProduct`, `ShopifyVariant`, `ShopifyImage`
 - `ShopifyCollection`
 - `ShopifyCart`, `ShopifyCartLine`

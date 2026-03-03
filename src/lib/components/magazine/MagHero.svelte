@@ -2,7 +2,6 @@
 	import { Button } from '$lib/components/ui/button';
 	import { splitChars } from './animations';
 	import hero1 from '$lib/assets/hero-01.jpeg';
-	import { scrollY } from 'svelte/reactivity/window';
 
 	// Animation state
 	let revealed = $state(false);
@@ -35,23 +34,15 @@
 			src={hero1}
 			alt="Aziza Spring Collection"
 			class="h-full w-full object-cover transition-transform duration-[2000ms] ease-out"
-			style="transform: scale({revealed ? 1 : 1.6}) translateY({scrollY.current ?? 0 * 0.3}px)"
+			style="transform: scale({revealed ? 1 : 1.6})"
 		/>
 		<div class="absolute inset-0 bg-black/30"></div>
-	</div>
-
-	<!-- Issue label — top right -->
-	<div
-		class="absolute top-8 right-8 z-10 transition-opacity duration-700 lg:top-12 lg:right-12"
-		style="opacity: {showText ? 1 : 0}"
-	>
-		<p class="text-xs tracking-[0.35em] text-white/50 uppercase">Issue 01 — Spring 2025</p>
 	</div>
 
 	<!-- Staggered headline — offset layout -->
 	<div class="absolute inset-0 z-10 flex flex-col justify-between p-8 lg:p-16">
 		<!-- "SPRING" top-left -->
-		<div class="mt-24 lg:mt-32" style="transform: translateY({scrollY.current ?? 0 * -0.15}px)">
+		<div class="mt-24 lg:mt-32">
 			<h1 class="font-serif text-[12vw] leading-[0.85] font-light text-white lg:text-[10vw]">
 				{#each titleTop as { char, index }}
 					<span
@@ -98,10 +89,7 @@
 			</div>
 
 			<!-- "COLLECTION" bottom-right -->
-			<div
-				class="order-1 text-right lg:order-2"
-				style="transform: translateY({scrollY.current ?? 0 * -0.1}px)"
-			>
+			<div class="order-1 text-right lg:order-2">
 				<h1 class="font-serif text-[10vw] leading-[0.85] font-light text-white lg:text-[8vw]">
 					{#each titleBottom as { char, index }}
 						<span
@@ -121,7 +109,7 @@
 	<!-- Scroll indicator -->
 	<div
 		class="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 transition-opacity duration-700"
-		style="opacity: {showCta && (scrollY.current ?? 0) < 50 ? 0.5 : 0}"
+		style="opacity: {showCta ? 0.5 : 0}"
 	>
 		<div class="h-12 w-px animate-pulse bg-white/40"></div>
 	</div>

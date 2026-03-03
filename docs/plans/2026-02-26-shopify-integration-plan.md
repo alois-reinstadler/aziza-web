@@ -13,6 +13,7 @@
 ### Task 1: Shopify Types
 
 **Files:**
+
 - Create: `src/lib/types/shopify.ts`
 
 **Step 1: Create Shopify type definitions**
@@ -117,6 +118,7 @@ git commit -m "feat: add Shopify type definitions"
 ### Task 2: Storefront API Client
 
 **Files:**
+
 - Modify: `src/lib/server/shopify.ts` (replace commented-out content)
 
 **Step 1: Implement the storefront fetch wrapper**
@@ -181,6 +183,7 @@ git commit -m "feat: implement Storefront API fetch wrapper"
 ### Task 3: GraphQL Queries — Products
 
 **Files:**
+
 - Create: `src/lib/server/shopify-queries.ts`
 
 **Step 1: Create product query functions**
@@ -300,6 +303,7 @@ git commit -m "feat: add product GraphQL queries"
 ### Task 4: GraphQL Queries — Cart
 
 **Files:**
+
 - Modify: `src/lib/server/shopify-queries.ts` (append cart queries)
 
 **Step 1: Add cart query functions**
@@ -365,10 +369,7 @@ const CART_FIELDS = `
 	}
 `;
 
-export async function createCart(
-	variantId: string,
-	quantity = 1
-): Promise<ShopifyCart> {
+export async function createCart(variantId: string, quantity = 1): Promise<ShopifyCart> {
 	const data = await storefront<{ cartCreate: { cart: ShopifyCart } }>(
 		`mutation CartCreate($input: CartInput!) {
 			cartCreate(input: $input) {
@@ -428,10 +429,7 @@ export async function updateCartLine(
 	return data.cartLinesUpdate.cart;
 }
 
-export async function removeCartLine(
-	cartId: string,
-	lineId: string
-): Promise<ShopifyCart> {
+export async function removeCartLine(cartId: string, lineId: string): Promise<ShopifyCart> {
 	const data = await storefront<{ cartLinesRemove: { cart: ShopifyCart } }>(
 		`mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
 			cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
@@ -480,6 +478,7 @@ git commit -m "feat: add cart GraphQL queries and mutations"
 ### Task 5: Root Layout Server — Cart Loading
 
 **Files:**
+
 - Create: `src/routes/+layout.server.ts`
 
 **Step 1: Create root layout server load**
@@ -527,6 +526,7 @@ git commit -m "feat: load cart from cookie in root layout"
 ### Task 6: Cart API Route
 
 **Files:**
+
 - Create: `src/routes/api/cart/+server.ts`
 
 **Step 1: Create cart API endpoint**
@@ -534,7 +534,13 @@ git commit -m "feat: load cart from cookie in root layout"
 ```typescript
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { createCart, addToCart, updateCartLine, removeCartLine, getCart } from '$lib/server/shopify-queries';
+import {
+	createCart,
+	addToCart,
+	updateCartLine,
+	removeCartLine,
+	getCart
+} from '$lib/server/shopify-queries';
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	const body = await request.json();
@@ -555,12 +561,14 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 				break;
 			}
 			case 'update': {
-				if (!cartId || !lineId) return json({ error: 'cartId and lineId required' }, { status: 400 });
+				if (!cartId || !lineId)
+					return json({ error: 'cartId and lineId required' }, { status: 400 });
 				cart = await updateCartLine(cartId, lineId, quantity ?? 1);
 				break;
 			}
 			case 'remove': {
-				if (!cartId || !lineId) return json({ error: 'cartId and lineId required' }, { status: 400 });
+				if (!cartId || !lineId)
+					return json({ error: 'cartId and lineId required' }, { status: 400 });
 				cart = await removeCartLine(cartId, lineId);
 				break;
 			}
@@ -602,6 +610,7 @@ git commit -m "feat: add cart API route for add/update/remove"
 ### Task 7: Cart Drawer Component
 
 **Files:**
+
 - Create: `src/lib/components/shop/CartDrawer.svelte`
 
 **Step 1: Create the cart drawer**
@@ -609,6 +618,7 @@ git commit -m "feat: add cart API route for add/update/remove"
 Uses the Drawer component from `$lib/components/ui/drawer`. Receives cart data as a prop. Shows line items with quantity controls. Checkout button redirects to Shopify checkout URL.
 
 The component should:
+
 - Import `Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter, DrawerClose` from `$lib/components/ui/drawer`
 - Import `Button` from `$lib/components/ui/button`
 - Import `Minus, Plus, X, ShoppingBag` from `@lucide/svelte`
@@ -638,17 +648,20 @@ git commit -m "feat: add cart drawer component"
 ### Task 8: Navbar Cart Integration
 
 **Files:**
+
 - Modify: `src/lib/components/marketing/Navbar.svelte`
 - Modify: `src/routes/+layout.svelte`
 
 **Step 1: Update Navbar to accept cart data and control drawer**
 
 Changes to Navbar:
+
 - Add props: `cartCount: number`, `onCartClick: () => void`
 - Replace the cart `Button` with one that calls `onCartClick`
 - Show a small badge on the cart icon when `cartCount > 0` — a small `absolute` positioned circle with the count
 
 Changes to `+layout.svelte`:
+
 - Import `CartDrawer`
 - Get cart data from `$page.data.cart` (from layout server load)
 - Add `cartOpen` state
@@ -672,6 +685,7 @@ git commit -m "feat: wire cart drawer into navbar and layout"
 ### Task 9: Shop Product Listing Page
 
 **Files:**
+
 - Create: `src/routes/(shop)/shop/+page.server.ts`
 - Create: `src/routes/(shop)/shop/+page.svelte`
 
@@ -711,6 +725,7 @@ export const load: PageServerLoad = async ({ url }) => {
 **Step 2: Create the shop page**
 
 Structure:
+
 - `<svelte:head>` with title "Shop — Aziza"
 - `data-navbar-dark` section, `pt-32 pb-20`
 - Header: "Shop" label + heading + subline
@@ -737,6 +752,7 @@ git commit -m "feat: add shop product listing page with sort"
 ### Task 10: Product Detail Page
 
 **Files:**
+
 - Create: `src/routes/(shop)/shop/[handle]/+page.server.ts`
 - Create: `src/routes/(shop)/shop/[handle]/+page.svelte`
 
@@ -757,6 +773,7 @@ export const load: PageServerLoad = async ({ params }) => {
 **Step 2: Create the product detail page**
 
 Structure:
+
 - `<svelte:head>` with product title
 - `data-navbar-dark` section, `pt-32 pb-20`
 - Breadcrumb: Shop > Product Title (using simple text links)
@@ -791,11 +808,13 @@ git commit -m "feat: add product detail page with variant selection and add-to-c
 ### Task 11: Cart Full Page
 
 **Files:**
+
 - Create: `src/routes/(shop)/cart/+page.svelte`
 
 **Step 1: Create cart page**
 
 Structure:
+
 - `<svelte:head>` with title "Cart — Aziza"
 - `data-navbar-dark` section, `pt-32 pb-20`
 - Header: "Your Cart"
@@ -836,6 +855,7 @@ Run: `bun format`
 Run: `bun dev`
 
 Test manually:
+
 - `/shop` loads products from Shopify
 - `/shop/[handle]` shows product detail
 - "Add to Cart" works and opens drawer

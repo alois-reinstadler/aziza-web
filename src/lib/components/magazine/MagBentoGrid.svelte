@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { inView } from './animations';
 	import { collections } from '$lib/config/collections';
-
 	const layoutClasses = [
 		'col-span-2 row-span-2',
 		'col-span-1 row-span-1',
@@ -42,6 +41,7 @@
 							src={col.images.hero}
 							alt={col.label}
 							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+							style="view-transition-name: collection-{col.id}"
 						/>
 						<div
 							class="absolute inset-0 bg-black/20 transition-colors duration-500 group-hover:bg-black/40"
