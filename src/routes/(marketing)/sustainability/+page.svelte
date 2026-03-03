@@ -7,7 +7,7 @@
 
 	import materialImg1 from '$lib/assets/stock-images/AdobeStock_687113608.webp';
 	import materialImg2 from '$lib/assets/stock-images/AdobeStock_1534945326.webp';
-	import materialImg3 from '$lib/assets/stock-images/AdobeStock_1809727053.webp';
+	import materialImg3 from '$lib/assets/stock-images/AdobeStock_1632366276.webp';
 
 	let scrollY = $state(0);
 
