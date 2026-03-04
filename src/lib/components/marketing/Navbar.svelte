@@ -26,10 +26,26 @@
 
 	let menuOpen = $state(false);
 	let scrolled = $derived(scrollY.current && scrollY.current > 60);
+	let navHidden = $state(false);
+	let lastScrollY = $state(0);
 	let isDark = $state(true);
 	let isShopRoute = $derived(
 		page.url.pathname.startsWith('/shop') || page.url.pathname.startsWith('/cart')
 	);
+
+	$effect(() => {
+		const y = scrollY.current ?? 0;
+		if (menuOpen) {
+			lastScrollY = y;
+			return;
+		}
+		if (y > lastScrollY && y > 100) {
+			navHidden = true;
+		} else if (y < lastScrollY) {
+			navHidden = false;
+		}
+		lastScrollY = y;
+	});
 
 	$effect(() => {
 		const update = () => {
@@ -131,20 +147,18 @@
 				{ y: '0%', duration: 1.5, ease: 'power3.inOut', stagger: 0.015 },
 				0
 			)
-			.to(menuLines, { backgroundColor: '#1e1d1a', duration: 0.125, ease: 'power2.out' }, 0.5)
+			.to(menuLines, { backgroundColor: '#1e1d1a', duration: 0.15, ease: 'power2.out' }, 0)
 			.to(
-				menuLines,
-				{
-					y: (_: number, el: HTMLElement, targets: HTMLElement[]) => {
-						const idx = Array.from(targets).indexOf(el);
-						return idx === 0 ? 4 : -5;
-					},
-					duration: 0.5,
-					ease: 'power2.out'
-				},
-				0.5
+				menuLines[0],
+				{ y: 5.3, rotation: 45, duration: 0.5, ease: 'power2.out' },
+				0.3
 			)
-			.to(logoImg, { filter: 'invert(0)', duration: 0.125, ease: 'power2.out' }, 0.5);
+			.to(
+				menuLines[1],
+				{ y: -5.3, rotation: -45, duration: 0.5, ease: 'power2.out' },
+				0.3
+			)
+			.to(logoImg, { filter: 'invert(0)', duration: 0.125, ease: 'power2.out' }, 0);
 
 		// Close timeline
 		closeTl = gsap
@@ -169,9 +183,10 @@
 				{ y: '100%', duration: 1, ease: 'power3.inOut', stagger: 0.01 },
 				0
 			)
-			.to(menuLines, { backgroundColor: 'white', duration: 0.125, ease: 'power2.out' }, '-=0.6')
-			.to(menuLines, { y: 0, duration: 0.75, ease: 'power2.out' }, '-=0.6')
-			.to(logoImg, { filter: 'invert(1)', duration: 0.125, ease: 'power2.out' }, '-=0.6');
+			.to(menuLines[0], { y: 0, rotation: 0, duration: 0.5, ease: 'power2.out' }, 0.3)
+			.to(menuLines[1], { y: 0, rotation: 0, duration: 0.5, ease: 'power2.out' }, 0.3)
+			.to(menuLines, { clearProps: 'backgroundColor', duration: 0.125, ease: 'power2.out' }, 0.6)
+			.to(logoImg, { clearProps: 'filter', duration: 0.125, ease: 'power2.out' }, 0.6);
 
 		// Hover animations (desktop only)
 		const isTouch = window.matchMedia('(pointer: coarse)').matches;
@@ -256,7 +271,8 @@
 <header
 	class={cn(
 		'fixed top-0 right-0 left-0 z-60 transition-all duration-300',
-		!menuOpen && scrolled ? 'backdrop-blur-sm' : 'bg-transparent'
+		!menuOpen && scrolled ? 'backdrop-blur-sm' : 'bg-transparent',
+		navHidden && !menuOpen ? '-translate-y-full' : 'translate-y-0'
 	)}
 	style="view-transition-name: navbar;"
 >
@@ -313,8 +329,8 @@
 					aria-label={menuOpen ? 'Close menu' : 'Open menu'}
 					onclick={toggleMenu}
 				>
-					<div class="nav-menu-line top" data-nav="menu-line"></div>
-					<div class="nav-menu-line bottom" data-nav="menu-line"></div>
+					<div class="nav-menu-line top {!menuOpen && !isDark ? 'is-light' : ''}" data-nav="menu-line"></div>
+					<div class="nav-menu-line bottom {!menuOpen && !isDark ? 'is-light' : ''}" data-nav="menu-line"></div>
 				</button>
 			</div>
 		</div>
@@ -432,6 +448,11 @@
 		height: 3px;
 		clip-path: inset(0.5px 0% 0.5px 0%);
 		will-change: transform, background-color;
+		transition: background-color 0.3s ease;
+	}
+
+	.nav-menu-line.is-light {
+		background-color: #1e1d1a;
 	}
 
 	.nav-menu-line.top {

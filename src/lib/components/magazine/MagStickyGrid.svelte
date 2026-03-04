@@ -61,18 +61,6 @@
 			}
 		});
 
-		// Title fade in
-		gsap.from(title, {
-			opacity: 0,
-			duration: 0.7,
-			ease: 'power1.out',
-			scrollTrigger: {
-				trigger: block,
-				start: 'top 57%',
-				toggleActions: 'play none none reset'
-			}
-		});
-
 		// Grid reveal: columns slide in from top/bottom
 		function gridRevealTimeline() {
 			const tl = gsap.timeline();

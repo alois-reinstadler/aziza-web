@@ -60,6 +60,8 @@
 		const logoStrokes = Array.from(document.querySelectorAll<SVGPathElement>('.logo-stroke'));
 		const logoFills = Array.from(document.querySelectorAll<SVGPathElement>('.logo-fill'));
 		const vignette = document.querySelector<HTMLElement>('.ring-vignette')!;
+		const introOverlay = document.querySelector<HTMLElement>('.intro-overlay')!;
+		const ringCenter = document.querySelector<HTMLElement>('.ring-center')!;
 
 		gsap.set(logoStrokes, { strokeDasharray: 500, strokeDashoffset: 500 });
 		gsap.set(logoFills, { opacity: 0 });
@@ -88,19 +90,25 @@
 			);
 		});
 
-		// Main scroll timeline
+		// Main scroll timeline — starts slightly before pin so the transition feels gradual
 		const mainTl = gsap.timeline({
-			scrollTrigger: { trigger: section, start: 'top top', end: 'bottom bottom', scrub: 1.5 }
+			scrollTrigger: { trigger: section, start: 'top 10%', end: 'bottom bottom', scrub: 2 }
 		});
+
+		// Dead zone: first 5% of scroll nothing happens — cushions the sticky lock
+		mainTl.to({}, { duration: 0.05 }, 0);
 
 		ringEls.forEach((el, i) => {
 			const dir = i % 2 === 0 ? 1 : -1;
 			const speed = 90 + i * 30;
-			mainTl.to(el, { rotation: dir * speed, duration: 1, ease: 'none' }, 0);
+			mainTl.to(el, { rotation: dir * speed, duration: 1, ease: 'none' }, 0.05);
 		});
 
-		mainTl.to(assembly, { scale: 5, duration: 1, ease: 'power2.in' }, 0);
-		mainTl.to(windowFrame, { scale: 8, duration: 0.4, ease: 'power2.in' }, 0);
+		// Intro scales up with the window frame
+		mainTl.to(introOverlay, { scale: 8, duration: 0.4, ease: 'power3.in' }, 0.05);
+
+		mainTl.to(assembly, { scale: 5, duration: 1, ease: 'power3.in' }, 0.05);
+		mainTl.to(windowFrame, { scale: 8, duration: 0.4, ease: 'power3.in' }, 0.05);
 
 		mainTl.to(logoStrokes[0], { strokeDashoffset: 0, duration: 0.25, ease: 'power2.inOut' }, 0.05);
 		mainTl.to(
@@ -112,6 +120,7 @@
 		mainTl.to(vignette, { opacity: 0, duration: 0.3, ease: 'power1.in' }, 0.5);
 		mainTl.to(allItems, { opacity: 0.3, duration: 0.25, ease: 'none' }, 0.55);
 		mainTl.to(allItems, { opacity: 0, duration: 0.15, ease: 'none' }, 0.75);
+		mainTl.to(ringCenter, { opacity: 0, duration: 0.15, ease: 'none' }, 0.75);
 
 		cleanup = () => {
 			gsap.killTweensOf('*');
@@ -127,17 +136,22 @@
 	{/each}
 </svelte:head>
 
-<!-- Intro -->
-<section class="intro" data-navbar-dark>
-	<div class="intro-inner">
-		<p class="intro-kicker">Spring 2025</p>
-		<h1>Where Home<br />Becomes Haven</h1>
-	</div>
-</section>
-
 <!-- Ring scroll section -->
 <section class="ring-section" data-navbar-dark>
 	<div class="ring-sticky">
+		<div class="intro-overlay">
+			<div class="intro-top-left">
+				<p class="intro-small">Where</p>
+				<h1 class="intro-big">Home</h1>
+			</div>
+			<div class="intro-bottom-right">
+				<p class="intro-small">Becomes</p>
+				<h1 class="intro-big">Haven</h1>
+			</div>
+			<div class="scroll-cue">
+				<span></span>
+			</div>
+		</div>
 		<div class="window-frame">
 			<img src={windowImg} alt="" />
 		</div>
@@ -168,8 +182,14 @@
 						<mask id="logo-mask">
 							<rect width="244" height="66" fill="black" />
 							<path d="M119 0V66H125V0H119Z" fill="white" />
-							<path d="M208 0L244 66H242L212 11L195 66H133V64H180L133 0H187V2H145L187 59H189L206 0H208Z" fill="white" />
-							<path d="M36 0L0 66H2L32 11L49 66H111V64H64L111 0H57V2H99L57 59H55L38 0H36Z" fill="white" />
+							<path
+								d="M208 0L244 66H242L212 11L195 66H133V64H180L133 0H187V2H145L187 59H189L206 0H208Z"
+								fill="white"
+							/>
+							<path
+								d="M36 0L0 66H2L32 11L49 66H111V64H64L111 0H57V2H99L57 59H55L38 0H36Z"
+								fill="white"
+							/>
 						</mask>
 						<clipPath id="logo-clip">
 							<rect width="244" height="66" />
@@ -187,14 +207,21 @@
 						<path d="M194 65H133" class="logo-stroke" />
 					</g>
 					<path d="M119 0V66H125V0H119Z" fill="white" class="logo-fill" />
-					<path d="M208 0L244 66H242L212 11L195 66H133V64H180L133 0H187V2H145L187 59H189L206 0H208Z" fill="white" class="logo-fill" />
-					<path d="M36 0L0 66H2L32 11L49 66H111V64H64L111 0H57V2H99L57 59H55L38 0H36Z" fill="white" class="logo-fill" />
+					<path
+						d="M208 0L244 66H242L212 11L195 66H133V64H180L133 0H187V2H145L187 59H189L206 0H208Z"
+						fill="white"
+						class="logo-fill"
+					/>
+					<path
+						d="M36 0L0 66H2L32 11L49 66H111V64H64L111 0H57V2H99L57 59H55L38 0H36Z"
+						fill="white"
+						class="logo-fill"
+					/>
 				</svg>
 			</div>
 		</div>
 	</div>
 </section>
-
 
 <style>
 	* {
@@ -202,33 +229,74 @@
 		margin: 0;
 	}
 
-	.intro {
-		height: 100vh;
-		background: #060608;
-		display: flex;
-		align-items: flex-end;
-		justify-content: center;
-		padding-bottom: 12vh;
+	.intro-overlay {
+		position: absolute;
+		inset: 0;
+		z-index: 25;
+		pointer-events: none;
+		will-change: transform, opacity;
 	}
 
-	.intro-inner {
-		text-align: center;
-	}
-
-	.intro-kicker {
-		font-size: 0.7rem;
-		letter-spacing: 0.25em;
-		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.35);
-		margin-bottom: 16px;
-	}
-
-	.intro h1 {
+	.intro-small {
 		font-family: 'Cormorant Garamond', Georgia, serif;
-		font-size: clamp(3rem, 8vw, 7rem);
+		font-size: clamp(1rem, 2.5vw, 2rem);
 		font-weight: 300;
+		color: rgba(255, 255, 255, 0.5);
+		letter-spacing: 0.05em;
 		line-height: 1;
+		margin-bottom: 0.15em;
+	}
+
+	.intro-big {
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(4rem, 14vw, 12rem);
+		font-weight: 300;
+		line-height: 0.85;
 		color: white;
+		letter-spacing: -0.03em;
+	}
+
+	.intro-top-left {
+		position: absolute;
+		top: 12vh;
+		left: clamp(1.5rem, 6vw, 6rem);
+	}
+
+	.intro-bottom-right {
+		position: absolute;
+		bottom: 12vh;
+		right: clamp(1.5rem, 6vw, 6rem);
+		text-align: right;
+	}
+
+	.scroll-cue {
+		position: absolute;
+		bottom: 3rem;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 1px;
+		height: 48px;
+		overflow: hidden;
+	}
+
+	.scroll-cue span {
+		display: block;
+		width: 1px;
+		height: 100%;
+		background: rgba(255, 255, 255, 0.3);
+		animation: scroll-line 2s ease-in-out infinite;
+	}
+
+	@keyframes scroll-line {
+		0% {
+			transform: translateY(-100%);
+		}
+		50% {
+			transform: translateY(0);
+		}
+		100% {
+			transform: translateY(100%);
+		}
 	}
 
 	.ring-section {

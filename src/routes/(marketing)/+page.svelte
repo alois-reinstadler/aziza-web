@@ -18,10 +18,10 @@
 
 <MagHero />
 <MagMarquee />
-<MagStickyGrid />
 <MagEditorialSpread />
 <MagBentoGrid />
 <MagFeatureScroll />
 <MagCraftStrip />
 <MagRingHero />
+<MagStickyGrid />
 <MagNewsletter />
