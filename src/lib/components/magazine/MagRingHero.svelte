@@ -63,7 +63,7 @@
 		const introOverlay = document.querySelector<HTMLElement>('.intro-overlay')!;
 		const ringCenter = document.querySelector<HTMLElement>('.ring-center')!;
 
-		gsap.set(logoStrokes, { strokeDasharray: 500, strokeDashoffset: 500 });
+		gsap.set(logoStrokes, { strokeDasharray: 500, strokeDashoffset: 500, opacity: 0 });
 		gsap.set(logoFills, { opacity: 0 });
 
 		const allImages = Array.from(document.querySelectorAll<HTMLElement>('.ring-item img'));
@@ -110,6 +110,7 @@
 		mainTl.to(assembly, { scale: 5, duration: 1, ease: 'power3.in' }, 0.05);
 		mainTl.to(windowFrame, { scale: 8, duration: 0.4, ease: 'power3.in' }, 0.05);
 
+		mainTl.to(logoStrokes, { opacity: 1, duration: 0.01 }, 0.05);
 		mainTl.to(logoStrokes[0], { strokeDashoffset: 0, duration: 0.25, ease: 'power2.inOut' }, 0.05);
 		mainTl.to(
 			logoStrokes.slice(1),

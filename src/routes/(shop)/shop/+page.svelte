@@ -15,7 +15,71 @@
 		{ value: 'price-desc', label: 'Price: High to Low' }
 	];
 
+	type GridSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+	const gridSizes: GridSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
+	let gridSize = $state<GridSize>('md');
+	let animating = $state(false);
+
+	const gridClasses: Record<GridSize, string> = {
+		xs: 'grid-cols-5 gap-1.5 lg:grid-cols-10 lg:gap-2',
+		sm: 'grid-cols-4 gap-2 lg:grid-cols-8 lg:gap-3',
+		md: 'grid-cols-3 gap-3 lg:grid-cols-6 lg:gap-4',
+		lg: 'grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6',
+		xl: 'grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8'
+	};
+	let gridEl = $state<HTMLDivElement | null>(null);
+
 	let addingId = $state<string | null>(null);
+
+	async function setGridSize(size: GridSize) {
+		if (size === gridSize || animating) return;
+		animating = true;
+
+		try {
+			const { gsap } = await import('gsap');
+			// @ts-ignore — gsap/Flip type casing mismatch on case-sensitive FS
+			const { Flip } = await import('gsap/Flip');
+			gsap.registerPlugin(Flip);
+
+			const items = gridEl?.querySelectorAll('[data-flip-id]');
+			if (!items?.length) {
+				gridSize = size;
+				animating = false;
+				return;
+			}
+
+			const state = Flip.getState(items);
+			const oldHeight = gridEl!.offsetHeight;
+			gridSize = size;
+
+			await new Promise<void>((resolve) => {
+				requestAnimationFrame(() => {
+					const newHeight = gridEl!.offsetHeight;
+					if (oldHeight !== newHeight) {
+						gsap.fromTo(
+							gridEl,
+							{ height: oldHeight },
+							{
+								height: newHeight,
+								duration: 0.7,
+								ease: 'power2.inOut',
+								onComplete: () => {
+									gsap.set(gridEl, { height: 'auto' });
+								}
+							}
+						);
+					}
+					Flip.from(state, {
+						duration: 0.7,
+						ease: 'power2.inOut',
+						onComplete: resolve
+					});
+				});
+			});
+		} finally {
+			animating = false;
+		}
+	}
 
 	function onSortChange(value: string | undefined) {
 		if (value) {
@@ -78,13 +142,26 @@
 				</p>
 				<h1 use:inView class="reveal-up font-serif text-4xl font-light lg:text-5xl">
 					{data.collection
-						? data.collections.find((c) => c.handle === data.collection)?.title ?? 'Collection'
+						? (data.collections.find((c) => c.handle === data.collection)?.title ?? 'Collection')
 						: 'All Products'}
 				</h1>
 			</div>
 
-			<!-- Sort -->
-			<div use:inView class="reveal-up">
+			<!-- Sort + Zoom -->
+			<div use:inView class="reveal-up flex items-center gap-4">
+				<div class="flex gap-1">
+					{#each gridSizes as size (size)}
+						<button
+							onclick={() => setGridSize(size)}
+							disabled={animating}
+							class="border px-3 py-2 text-xs tracking-wide transition-colors {gridSize === size
+								? 'border-foreground bg-foreground text-background'
+								: 'border-border text-muted-foreground hover:border-foreground'}"
+						>
+							{size}
+						</button>
+					{/each}
+				</div>
 				<Select.Root type="single" value={data.sort} onValueChange={onSortChange}>
 					<Select.Trigger class="w-[200px] rounded-none text-sm">
 						{sortOptions.find((o) => o.value === data.sort)?.label ?? 'Sort by'}
@@ -113,9 +190,7 @@
 				</a>
 				{#each data.collections as col (col.id)}
 					<a
-						href="/shop?collection={col.handle}{data.sort !== 'newest'
-							? `&sort=${data.sort}`
-							: ''}"
+						href="/shop?collection={col.handle}{data.sort !== 'newest' ? `&sort=${data.sort}` : ''}"
 						class="border px-4 py-2 text-xs tracking-wide transition-colors {data.collection ===
 						col.handle
 							? 'border-foreground bg-foreground text-background'
@@ -133,11 +208,23 @@
 				<p class="text-muted-foreground">No products found</p>
 			</div>
 		{:else}
-			<div class="grid grid-cols-2 gap-6 lg:grid-cols-3 lg:gap-8">
+			<div class="grid {gridSize === 'xs' ? 'mb-4 grid-rows-[1fr]' : 'grid-rows-[0fr]'}">
+				<p
+					class="overflow-hidden text-xs font-medium tracking-[0.3em] text-muted-foreground uppercase"
+				>
+					{data.collection
+						? (data.collections.find((c: { handle: string }) => c.handle === data.collection)
+								?.title ?? 'Products')
+						: 'All Products'}
+					— {data.products.length} items
+				</p>
+			</div>
+			<div bind:this={gridEl} class="grid {gridClasses[gridSize]}">
 				{#each data.products as product, i (product.id)}
 					<ProductCard
 						{product}
 						index={i}
+						{gridSize}
 						onQuickAdd={quickAdd}
 						adding={addingId === product.id}
 					/>

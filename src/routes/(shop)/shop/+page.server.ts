@@ -30,12 +30,18 @@ export const load: PageServerLoad = async ({ url }) => {
 			break;
 	}
 
-	const [result, collections] = await Promise.all([
+	const HIDDEN_COLLECTION_HANDLES = ['frontpage'];
+
+	const [result, rawCollections] = await Promise.all([
 		collectionHandle
 			? getCollectionProducts(collectionHandle, 24, sortKey, reverse, after)
 			: getProducts(24, sortKey, reverse, after),
 		getCollections()
 	]);
+
+	const collections = rawCollections.filter(
+		(c) => !HIDDEN_COLLECTION_HANDLES.includes(c.handle)
+	);
 
 	return {
 		products: result.products,

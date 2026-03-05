@@ -184,6 +184,15 @@ export async function getCollections(first = 20): Promise<ShopifyCollectionSumma
 	return data.collections.nodes;
 }
 
+type CollectionSortKey = 'COLLECTION_DEFAULT' | 'CREATED' | 'PRICE' | 'BEST_SELLING';
+
+const COLLECTION_SORT_MAP: Record<ProductSortKey, CollectionSortKey> = {
+	CREATED_AT: 'CREATED',
+	PRICE: 'PRICE',
+	TITLE: 'COLLECTION_DEFAULT',
+	BEST_SELLING: 'BEST_SELLING'
+};
+
 export async function getCollectionProducts(
 	handle: string,
 	first = 24,
@@ -191,6 +200,7 @@ export async function getCollectionProducts(
 	reverse = true,
 	after?: string
 ): Promise<ProductsResult> {
+	const collectionSortKey = COLLECTION_SORT_MAP[sortKey];
 	const data = await storefront<{
 		collection: { products: { nodes: ShopifyProduct[]; pageInfo: ShopifyPageInfo } } | null;
 	}>(
@@ -207,7 +217,7 @@ export async function getCollectionProducts(
 				}
 			}
 		}`,
-		{ handle, first, sortKey, reverse, after }
+		{ handle, first, sortKey: collectionSortKey, reverse, after }
 	);
 	if (!data.collection) return { products: [], pageInfo: { hasNextPage: false, endCursor: null } };
 	return { products: data.collection.products.nodes, pageInfo: data.collection.products.pageInfo };
